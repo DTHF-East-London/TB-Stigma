@@ -197,8 +197,8 @@ dataset_iqc <- dataset_iqc[,metadata_iqc$`Variable / Field Name`]
                    dbname = "long_covid", 
                    host = 'localhost',
                    port = 3306,
-                   user = "freedom",
-                   password = "silverWATER9!8"
+                   user = "",
+                   password = ""
                    )
   dbWriteTable(con, "household", dataset_hh, overwrite = TRUE, row.names = FALSE,
                field.types = c(record_id = 'integer',
