@@ -2,6 +2,7 @@
 library(redcapAPI)
 library(config)
 library(openxlsx)
+library(RMySQL)
 
 #rcon <- NULL
 #report_id <- ''
@@ -83,7 +84,7 @@ getMetadata <- function(forms, fields){
   metadata <- exportMetaData(
     rcon,
     fields = NULL,
-    forms = NULL,
+    forms = forms,
     error_handling = getOption("redcap_error_handling"),
     drop_utf8 = FALSE
   )
