@@ -1,0 +1,1626 @@
+library(dplyr)
+library(xlsx)
+#source('Scripts/functions.R')
+#source('Scripts/main.R')
+
+wb <- xlsx::loadWorkbook("Dataset/Decsriptive Statistics.xlsx")
+
+works_sheets <- xlsx::getSheets(wb)
+
+tmp_sheet <- works_sheets[["Participant Demographics"]]
+
+rows <- getRows(tmp_sheet)
+
+cells <- getCells(rows)
+
+################################################################################
+#                                                                              #
+#                                 Baseline                                     #
+#                                                                              #
+################################################################################
+
+participants_all <- subset(baseline, baseline$covid19_screening_tool_complete==2)
+
+participants_all$calc_smoking_status[participants_all$tu_smoking=='1' | participants_all$tu_smoking=='2'] <- 1
+
+participants_all$calc_smoking_status[participants_all$tu_smoking=='3'] <- 2
+
+participants_all <- participants_all %>% relocate(.data = ., calc_smoking_status, .after = tu_smoking)
+
+participants_smokers <- subset(participants_all, participants_all$calc_smoking_status == 1)
+
+participants_non_smokers <- subset(participants_all, 
+                               participants_all$calc_smoking_status == 2)
+
+participants_total <- nrow(participants_all)
+
+smokers_total <- nrow(participants_smokers)
+
+non_smokers <- nrow(participants_non_smokers)
+
+setCellValue(cells[["3.2"]], paste("Patient demographics (n=", nrow(participants_all),")"))
+
+setCellValue(cells[["5.4"]], paste("Smoker   (n=",nrow(participants_smokers),")"))
+
+setCellValue(cells[["5.5"]], paste("Non-smoker (n=",nrow(participants_non_smokers),")"))
+
+#Age
+setCellValue(cells[["7.4"]], paste(round(mean(participants_smokers$sc_age),1),"(",round(sd(participants_smokers$sc_age),1),")"))
+setCellValue(cells[["7.5"]], paste(round(mean(participants_non_smokers$sc_age),1),"(",round(sd(participants_non_smokers$sc_age),1),")"))
+setCellValue(cells[["7.6"]], paste(round(mean(participants_all$sc_age),1),"(",round(sd(participants_all$sc_age),1),")"))
+
+#Gender
+#Male
+setCellValue(
+  cells[["8.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+          participants_smokers$sd_gender=='1')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers,
+          participants_smokers$sd_gender=='1'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_gender=='1'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["8.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_gender=='1')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_gender=='1'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_gender=='1'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["8.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_gender=='1')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_gender=='1'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Female
+setCellValue(
+  cells[["9.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_gender=='2')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_gender=='2'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_gender=='2'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["9.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+         participants_non_smokers$sd_gender=='2')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_gender=='2'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_gender=='2'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["9.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_gender=='2')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_gender=='2'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+
+#sd_area
+#Urban
+setCellValue(
+  cells[["10.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_area=='1')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_area=='1'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_area=='1'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["10.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_area=='1')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_area=='1'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_area=='1'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["10.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_area=='1')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_area=='1'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Rural
+setCellValue(
+  cells[["11.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_area=='2')),  
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_area=='2')) /
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_area=='2'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["11.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_area=='2')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_area=='1'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_area=='2'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["11.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_area=='2')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_area=='2'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Farm/Mine
+setCellValue(
+  cells[["12.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_area=='3')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_area=='3'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_area=='3'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["12.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_area=='3')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_area=='3'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_area=='3'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["12.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_area=='2')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_area=='2'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#sd_province
+#Gauteng
+setCellValue(
+  cells[["13.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_province=='1')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_province=='1'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='1'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["13.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_province=='1')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_province=='1'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='1'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["13.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_province=='1')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_province=='1'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Western Cape
+setCellValue(
+  cells[["14.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_province=='2')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_province=='2'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='2'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["14.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_province=='2')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_province=='2'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='2'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["14.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_province=='2')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_province=='2'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+#Eastern Cape
+setCellValue(
+  cells[["15.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_province=='3')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_province=='3'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='3'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["15.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_province=='3')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_province=='3'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='3'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["15.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_province=='3')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_province=='3'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#KwaZulu-Natal
+setCellValue(
+  cells[["16.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_province=='4')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_province=='4'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='4'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["16.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_province=='4')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_province=='4'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='4'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["16.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_province=='4')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_province=='4'))/
+        nrow(
+         participants_all)*100,1),
+    ")"))
+
+#Limpopo
+setCellValue(
+  cells[["17.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_province=='5')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_province=='5'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='5'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["17.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_province=='5')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_province=='5'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='5'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["17.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_province=='5')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_province=='5'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Northern Cape
+setCellValue(
+  cells[["18.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_province=='6')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_province=='6'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='6'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["18.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_province=='6')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_province=='6'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='6'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["18.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_province=='6')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_province=='6'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Free State
+setCellValue(
+  cells[["19.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_province=='7')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_province=='7'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='7'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["19.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_province=='7')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_province=='7'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='7'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["19.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_province=='7')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_province=='7'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#North West
+setCellValue(
+  cells[["20.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_province=='8')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_province=='8'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='8'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["20.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_province=='8')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_province=='8'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='8'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["20.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_province=='8')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_province=='8'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Mpumalanga
+setCellValue(
+  cells[["21.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_province=='9')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_province=='9'))/
+        nrow(
+          subset(
+            participants_smokers, 
+            participants_smokers$sd_province=='9'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["21.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_province=='9')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_province=='9'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_province=='9'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["21.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_province=='9')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_province=='9'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#sd_education
+#No formal education
+setCellValue(
+  cells[["22.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_level_of_edu=='0')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_level_of_edu=='0'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_level_of_edu=='0'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["22.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_level_of_edu=='0')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_level_of_edu=='0'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_level_of_edu=='0'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["22.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_level_of_edu=='0')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_level_of_edu=='0'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Some primary school
+setCellValue(
+  cells[["23.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_level_of_edu=='2')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_level_of_edu=='2'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_level_of_edu=='2'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["23.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_level_of_edu=='2')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_level_of_edu=='2'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_level_of_edu=='2'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["23.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_level_of_edu=='2')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_level_of_edu=='2'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Complete primary school
+setCellValue(
+  cells[["24.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_level_of_edu=='3')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_level_of_edu=='3'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_level_of_edu=='3'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["24.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_level_of_edu=='3')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_level_of_edu=='3'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_level_of_edu=='3'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["24.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_level_of_edu=='3')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_level_of_edu=='3'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Some secondary school
+setCellValue(
+  cells[["25.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_level_of_edu=='4')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_level_of_edu=='4'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_level_of_edu=='4'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["25.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_level_of_edu=='4')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_level_of_edu=='4'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_level_of_edu=='4'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["25.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_level_of_edu=='4')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_level_of_edu=='4'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Complete secondary school
+setCellValue(
+  cells[["26.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_level_of_edu=='5')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_level_of_edu=='5'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_level_of_edu=='5'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["26.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_level_of_edu=='5')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_level_of_edu=='5'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_level_of_edu=='5'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["26.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_level_of_edu=='5')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_level_of_edu=='5'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Some college or university
+setCellValue(
+  cells[["27.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_level_of_edu=='6')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_level_of_edu=='6'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_level_of_edu=='6'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["27.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_level_of_edu=='6')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_level_of_edu=='6'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_level_of_edu=='6'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["27.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_level_of_edu=='6')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_level_of_edu=='6'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Complete college or university
+setCellValue(
+  cells[["28.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_level_of_edu=='7')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_level_of_edu=='7'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_level_of_edu=='7'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["28.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_level_of_edu=='7')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_level_of_edu=='7'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_level_of_edu=='7'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["28.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_level_of_edu=='7')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_level_of_edu=='7'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Other (specify)
+setCellValue(
+  cells[["29.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_level_of_edu=='8')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_level_of_edu=='8'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_level_of_edu=='8'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["29.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_level_of_edu=='8')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_level_of_edu=='8'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_level_of_edu=='8'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["29.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_level_of_edu=='8')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_level_of_edu=='8'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Race
+#Black African
+setCellValue(
+  cells[["30.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_race=='1')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_race=='1'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_race=='1'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["30.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_race=='1')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_race=='1'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_race=='1'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["30.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_race=='1')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_race=='1'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Coloured
+setCellValue(
+  cells[["31.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_race=='2')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_race=='2'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_race=='2'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["31.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_race=='2')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_race=='2'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_race=='2'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["31.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_race=='2')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_race=='2'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#White
+setCellValue(
+  cells[["32.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_race=='3')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_race=='3'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_race=='3'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["32.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_race=='3')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_race=='3'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_race=='3'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["32.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_race=='3')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_race=='3'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Indian
+setCellValue(
+  cells[["33.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_race=='4')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_race=='4'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_race=='4'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["33.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_race=='4')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_race=='4'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_race=='4'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["33.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_race=='4')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_race=='4'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+#Other (Specify)
+setCellValue(
+  cells[["34.4"]], 
+  paste(
+    nrow(
+      subset(
+        participants_smokers, 
+        participants_smokers$sd_race=='5')), 
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_smokers, 
+          participants_smokers$sd_race=='5'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_race=='5'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["34.5"]], 
+  paste(
+    nrow(
+      subset(
+        participants_non_smokers, 
+        participants_non_smokers$sd_race=='5')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_non_smokers, 
+          participants_non_smokers$sd_race=='5'))/
+        nrow(
+          subset(
+            participants_all, 
+            participants_all$sd_race=='5'))*
+        100,1), 
+    ")"))
+
+setCellValue(
+  cells[["34.6"]], 
+  paste(
+    nrow(
+      subset(
+        participants_all, 
+        participants_all$sd_race=='5')),
+    "(",
+    round(
+      nrow(
+        subset(
+          participants_all, 
+          participants_all$sd_race=='5'))/
+        nrow(
+          participants_all)*100,1),
+    ")"))
+
+
+xlsx::forceFormulaRefresh("Dataset/Decsriptive Statistics.xlsx")
+
+xlsx::saveWorkbook(wb, "Dataset/Decsriptive Statistics.xlsx")
