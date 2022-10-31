@@ -81,6 +81,7 @@ generateSummaryReport <- function(df){
 }
 
 getMetadata <- function(forms, fields){
+
   metadata <- exportMetaData(
     rcon,
     fields = NULL,
@@ -88,6 +89,10 @@ getMetadata <- function(forms, fields){
     error_handling = getOption("redcap_error_handling"),
     drop_utf8 = FALSE
   )
+  
+  
+  
+  
   
   return(metadata)
 }
@@ -150,11 +155,11 @@ set_weeks <- function(df){
   
   df$project_start_date <- as.Date("2021-03-28")
   
-  df$site_start_date[df$site_name=="Grey Gateway"] <- as.Date("2021-03-28")
-  df$site_start_date[df$site_name=="Empilweni Gompo CHC"] <- as.Date("2021-03-28")
-  df$site_start_date[df$site_name=="Nontyatyambo CHC"] <- as.Date("2021-05-10")
-  df$site_start_date[df$site_name=="Duncan Village CHC"] <- as.Date("2021-05-23")
-  df$site_start_date[df$site_name=="Ndevana"] <- as.Date("2023-07-03")
+ # df$site_start_date[df$site_name=="Grey Gateway"] <- as.Date("2021-03-28")
+ # df$site_start_date[df$site_name=="Empilweni Gompo CHC"] <- as.Date("2021-03-28")
+ # df$site_start_date[df$site_name=="Nontyatyambo CHC"] <- as.Date("2021-05-10")
+ # df$site_start_date[df$site_name=="Duncan Village CHC"] <- as.Date("2021-05-23")
+ # df$site_start_date[df$site_name=="Ndevana"] <- as.Date("2023-07-03")
   
   df$week <- ceiling(difftime(df$today_s_date, df$site_start_date, units = "weeks"))
   df$week <- as.integer(df$week)
@@ -170,11 +175,11 @@ set_months <- function(df){
   
   df$project_start_date <- as.Date("2021-03-28")
   
-  df$site_start_date[df$site_name=="Grey Gateway"] <- as.Date("2021-03-28")
-  df$site_start_date[df$site_name=="Empilweni Gompo CHC"] <- as.Date("2021-03-28")
-  df$site_start_date[df$site_name=="Nontyatyambo CHC"] <- as.Date("2021-05-10")
-  df$site_start_date[df$site_name=="Duncan Village CHC"] <- as.Date("2021-05-23")
-  df$site_start_date[df$site_name=="Ndevana"] <- as.Date("2022-07-03")
+ # df$site_start_date[df$site_name=="Grey Gateway"] <- as.Date("2021-03-28")
+ #  df$site_start_date[df$site_name=="Empilweni Gompo CHC"] <- as.Date("2021-03-28")
+ #  df$site_start_date[df$site_name=="Nontyatyambo CHC"] <- as.Date("2021-05-10")
+ #  df$site_start_date[df$site_name=="Duncan Village CHC"] <- as.Date("2021-05-23")
+ # df$site_start_date[df$site_name=="Ndevana"] <- as.Date("2022-07-03")
   
   df$month <- ceiling(difftime(df$today_s_date, df$site_start_date, units = "days")/(365.25/12))
   df$month <- as.integer(df$month)
