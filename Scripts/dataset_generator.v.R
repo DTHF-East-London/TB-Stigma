@@ -71,11 +71,28 @@ for(field in fields){
     branching <- gsub('\\[','data$',branching)
     branching <- gsub('\\]',' ',branching)
     branching <- gsub('and','\\&',branching)
-    branching <- gsub('or','\\|',branching)
+    branching <- gsub(' or ','\\ | ',branching)
     branching <- gsub('\\(','\\___',branching)
-    branching <- gsub('\\)','',branching)
+    branching <- gsub('\\ ___','\\ (',branching)
+    branching <- gsub('\\)]',']',branching)
     branching <- gsub(' =', ' == ', branching)
+    branching <- gsub('\\______','\\((',branching)
+    branching <- gsub('[>]', 'x', branching)
+    branching <- gsub('[<]', 'x', branching)
+    branching <- gsub('[""]', 'x',branching)
+    branching <- gsub('x=', '>=', branching)
+    branching <- gsub('  xxxx','x',branching)
+    branching <- gsub('\\)  ==  ',' == ',branching)
+    branching <- gsub("or\n", " | ", branching)
+    branching <- gsub("  x ", " > ", branching)
+    branching <- gsub("\\<data$preferred_language_to_be_ux\\>","is.na(data$preferred_language_to_be_u)", branching)
+    if(branching=="data$preferred_language_to_be_ux")
+      branching <- "is.na(data$preferred_language_to_be_u)"
     
+    if(branching=="data$consent_date xxxx")
+      branching <- "is.na(data$consent_data)"
+    
+    print(branching)
     if(field %in% names(data)){
       field_data <- subset(data, eval(parse(text=paste(branching))))
       field_data <- field_data %>% select("record_id", field)
@@ -103,7 +120,7 @@ library(openxlsx)
 
 #field <- list(data_dictionary$field_name)
 
-file_name_data <- paste("Dataset/TB Stigma: Household_Raw", Sys.Date(),".xlsx")
+file_name_data <- paste("Data/TB Stigma: Household_Raw", Sys.Date(),".xlsx")
 
 writeXlsx(data_dictionary, "DataDictionary", file_name_data, TRUE)
 
