@@ -10,7 +10,7 @@ insertRow <- function(existingDF, newrow, r) {
   existingDF
 }
 
-data_dictionary <- getMetadata(2)
+data_dictionary <- getMetadata(NULL, NULL)
 
 data_dictionary <- data_dictionary %>% mutate(.data = ., Observed = NA, Total = NA, Completeness = NA, Mean = NA, Median = NA, Min = NA, Max =NA) %>% relocate(.data = ., c(Observed, Total, Completeness, Mean, Median, Min, Max), .before = field_name)
 
@@ -18,14 +18,14 @@ data_dictionary <- rbind(c("Observed", "Total", "Completeness", "Mean", "Median"
 
 fields <- data_dictionary$field_name
 
-data <- getREDCapRecords(0,NULL,NULL,NULL)
+data <- getREDCapRecords(NULL,NULL,NULL)
 
 #drop identifiers
-data <- subset(data, select = -c(3,4,5,7,17))
+#data <- subset(data, select = -c(3,4,5,7,17))
 
-data$redcap_data_access_group <- data$pi_research_assistant
+#data$redcap_data_access_group <- data$pi_research_assistant
 
-data$ca_ra <- data$pi_research_assistant
+#data$ca_ra <- data$pi_research_assistant
 
 data <- subset(data, select = -c(2))
 
@@ -43,6 +43,7 @@ for(field in checkbox$`name`){
 field <- "today_s_date"
 
 for(field in fields){
+  print(field)
   i <- which(data_dictionary$field_name==field) 
   if(field!="Variable / Field Name" && is.na(data_dictionary[i, 19])){
     
@@ -66,6 +67,7 @@ for(field in fields){
     }
   }else if(field!="Variable / Field Name"){
     branching <- data_dictionary[i,19]
+    print(branching)
     branching <- gsub('\\[','data$',branching)
     branching <- gsub('\\]',' ',branching)
     branching <- gsub('and','\\&',branching)
