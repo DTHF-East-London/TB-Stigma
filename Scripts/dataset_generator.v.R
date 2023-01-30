@@ -122,6 +122,6 @@ library(openxlsx)
 
 file_name_data <- paste("Data/TB Stigma: Household_Raw", Sys.Date(),".xlsx")
 
-writeXlsx(data_dictionary, "DataDictionary", file_name_data, TRUE)
+writeXlsx(data_dictionary, "DataDictionary", file_name_data, TRUE, FALSE)
 
 writeXlsx(data, "Data", file_name_data, FALSE)
