@@ -127,4 +127,5 @@ writeXlsx(data_dictionary, "DataDictionary", file_name_data, TRUE, FALSE)
 
 writeXlsx(data, "Data", file_name_data, FALSE)
 
+write.csv(data_dictionary, "Data/daily_review.csv", sep = ',', row.names = FALSE)
 
