@@ -212,6 +212,7 @@ Oversurveyed_squares <- readxl::read_excel("Metadata/Oversurveyed_squares.xlsx",
                                    col_types = c("text", "numeric", "numeric", 
                                                  "text"))
 
+
 Oversurveyed_squares$AreaCode <- NA
 
 Oversurveyed_squares$AreaCode[Oversurveyed_squares$Area == "Duncan Village"] <- 1
@@ -326,12 +327,10 @@ full_dataset_master$oversampled[(full_dataset_master$area_1=="Ndevana" | full_da
 #}
 
 #Generate summary
-<<<<<<< HEAD
 stview(dfSummary(dataset_hhd))
 summarytools::dfSummary()
 save(dfSummary(dataset_hhd))
-=======
 #stview(dfSummary(dataset_hhd))
 #summarytools::dfSummary()
 #save(dfSummary(dataset_hhd))
->>>>>>> 42d32e2907f84225a9ad767037d90b80d6a38314
+42d32e2907f84225a9ad767037d90b80d6a38314
