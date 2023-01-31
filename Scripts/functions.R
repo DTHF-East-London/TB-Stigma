@@ -59,7 +59,7 @@ getREDCapRecords <- function(events, forms, selected_fields){
     forms = forms,
     records = NULL,
     events = events,
-    labels = TRUE,
+    labels = FALSE,
     dates = FALSE,
     survey = TRUE,
     dag = TRUE,
@@ -81,7 +81,7 @@ generateSummaryReport <- function(df){
 }
 
 getMetadata <- function(forms, fields){
-
+  
   metadata <- exportMetaData(
     rcon,
     fields = NULL,
@@ -107,9 +107,9 @@ writeXlsx <- function(df, worksheetName, outputFile, isCreateFile, isRowName){
   wb <<- NULL
   print(getwd())
   if(isCreateFile){
-    wb <<- createWorkbook()
+    wb <<- openxlsx::createWorkbook()
   }else{
-    wb <<- loadWorkbook(outputFile)
+    wb <<- openxlsx::loadWorkbook(outputFile)
   }
   
   #if(worksheetName %in% names(wb)){
@@ -118,28 +118,21 @@ writeXlsx <- function(df, worksheetName, outputFile, isCreateFile, isRowName){
   #}else{
   #  addWorksheet(wb,worksheetName)
   #}/
-  addWorksheet(wb, worksheetName)
-  writeDataTable(wb, worksheetName, df, tableStyle = "TableStyleLight9", rowNames = isRowName)
-  saveWorkbook(wb, outputFile, overwrite = TRUE)
+  openxlsx::addWorksheet(wb, worksheetName)
+  openxlsx::writeDataTable(wb, worksheetName, df, tableStyle = "TableStyleLight9", rowNames = isRowName)
+  openxlsx::saveWorkbook(wb, outputFile, overwrite = TRUE)
 }
 
 save_data <- function(df, name) {
-  wb <- createWorkbook()
-  addWorksheet(wb, name)
-  writeDataTable(wb, name, df, tableStyle = "TableStyleLight9")
-  saveWorkbook(wb, paste0(name, ".xlsx"), overwrite = TRUE)
+  wb <- openxlsx::createWorkbook()
+  openxlsx::addWorksheet(wb, name)
+  openxlsx::writeDataTable(wb, name, df, tableStyle = "TableStyleLight9")
+  openxlsx::saveWorkbook(wb, paste0(name, ".xlsx"), overwrite = TRUE)
 }
 
 getREDCapMappings <- function(){
   mappings <- exportMappings(rcon)
   return(mappings)
-}
-
-save_data <- function(df, name) {
-  wb <- createWorkbook()
-  addWorksheet(wb, name)
-  writeDataTable(wb, name, df, tableStyle = "TableStyleLight9", rowNames = TRUE)
-  saveWorkbook(wb, paste0(name, ".xlsx"), overwrite = TRUE)
 }
 
 merge_by_week_df <- function(df_1, df_2){
