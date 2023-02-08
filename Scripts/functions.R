@@ -54,16 +54,16 @@ getMissingSummary <- function(){
 getREDCapRecords <- function(events, forms, selected_fields){
   records <- exportRecords(
     rcon,
-    factors = FALSE,
+    factors = TRUE,
     fields = selected_fields,
     forms = forms,
     records = NULL,
     events = events,
-    labels = FALSE,
+    labels = TRUE,
     dates = FALSE,
     survey = TRUE,
     dag = TRUE,
-    checkboxLabels = FALSE,
+    checkboxLabels = TRUE,
     colClasses = NA
   )
   return(records)
