@@ -7,6 +7,7 @@ library(redcapAPI)
 library(RMySQL)
 library(summarytools)
 library(readxl)
+library(haven)
 
 source("Scripts/functions.R")
 
@@ -16,11 +17,15 @@ rcon <- getREDCapConnection(1)
 path <- "./Data/"
 output_file <- paste0('dataset',format(Sys.time(), '%d_%B_%Y'),'.xlsx')
 
+form <- c("study_notes")
+
 TBStigmaHouseholdSurvey_DataDictionary_2022_08_05 <- read_csv("Metadata/TBStigmaHouseholdSurvey_DataDictionary_2022-08-05.csv")
 
 #metadata_eng <- subset(TBStigmaHouseholdSurvey_DataDictionary_2022_08_05, TBStigmaHouseholdSurvey_DataDictionary_2022_08_05$English=='1')
   
 #metadata_xho <- subset(TBStigmaHouseholdSurvey_DataDictionary_2022_08_05, TBStigmaHouseholdSurvey_DataDictionary_2022_08_05$Xhosa=='1')
+
+#dataset_master <- getReportData(NULL, 84)
 
 dataset_master <- getREDCapRecords(NULL, NULL, NULL)
 
@@ -84,7 +89,7 @@ dataset_screening <- left_join(dataset_screening_1, dataset_screening_2, by = 'r
 
 dataset_consenting <- subset(dataset_sc, select = -c(2:15))
 
-dataset_consenting <- subset(dataset_consenting, !is.na(dataset_consenting$intro_script1))
+dataset_consenting <- subset(dataset_consenting, dataset_consenting$did_the_person_consent_to == 'Yes' & dataset_consenting$screening_and_consenting_complete == "Complete")
 
 dataset_sc_final <- left_join(dataset_screening, dataset_consenting, by = 'record_id')
 
@@ -330,3 +335,12 @@ full_dataset_master$oversampled[(full_dataset_master$area_1=="Ndevana" | full_da
 #stview(dfSummary(dataset_hhd))
 #summarytools::dfSummary()
 #save(dfSummary(dataset_hhd))
+
+#rename columns with long names
+colnames(full_dataset_master)[which( colnames(full_dataset_master)=="labelling_hh_on_google_maps_complete" )] <- "hhl_complete"
+colnames(full_dataset_master)[which( colnames(full_dataset_master)=="screening_and_consenting_complete" )] <- "sc_complete"
+colnames(full_dataset_master)[which( colnames(full_dataset_master)=="head_of_household_demographics_complete" )] <- "hhd_complete"
+colnames(full_dataset_master)[which( colnames(full_dataset_master)=="proof_of_reimbursement_and_snack_complete" )] <- "prs_complete"
+colnames(full_dataset_master)[which( colnames(full_dataset_master)=="internal_quality_control_complete" )] <- "iqc_complete"
+
+write_dta(full_dataset_master, "Data/full_dataset.dta")
