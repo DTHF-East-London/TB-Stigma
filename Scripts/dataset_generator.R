@@ -1,5 +1,4 @@
 if (!require("tidyverse")) install.packages("tidyverse", dependencies = TRUE)
-
 library(openxlsx)
 library(tidyverse)
 library(dplyr)
@@ -93,7 +92,7 @@ dataset_consenting <- subset(dataset_consenting, dataset_consenting$did_the_pers
 
 dataset_sc_final <- left_join(dataset_screening, dataset_consenting, by = 'record_id')
 
-dataset_sc_final <- subset(dataset_sc_final, dataset_sc_final$did_the_person_consent_to==1)
+dataset_sc_final <- subset(dataset_sc_final, dataset_sc_final$did_the_person_consent_to==1 | dataset_sc_final$did_the_person_consent_to=='Yes')
 
 rm()
 ############################# head_of_household_demographics###################
@@ -106,9 +105,9 @@ dataset_hhd <- subset(dataset_hhd, select = -c(2:12))
 
 dataset_hhd <- subset(dataset_hhd, !is.na(dataset_hhd$language_prefer))
 
-dataset_hhd_eng <- subset(dataset_hhd, dataset_hhd$language_prefer=='1')
+dataset_hhd_eng <- subset(dataset_hhd, dataset_hhd$language_prefer=='1' | dataset_hhd$language_prefer=='English')
 
-dataset_hhd_xho <- subset(dataset_hhd, dataset_hhd$language_prefer=='2')
+dataset_hhd_xho <- subset(dataset_hhd, dataset_hhd$language_prefer=='2' | dataset_hhd$language_prefer=='IsiXhosa')
 
 metadata_hhd_eng <- subset(metadata_hhd, metadata_hhd$English=='1')
 
@@ -132,9 +131,9 @@ dataset_que <- getREDCapRecords(NULL, forms, NULL)
 
 dataset_que <- subset(dataset_que, !is.na(dataset_que$ques_language))
 
-dataset_que_eng <- subset(dataset_que, dataset_que$ques_language=='1')
+dataset_que_eng <- subset(dataset_que, dataset_que$ques_language=='1' | dataset_que$ques_language=='English')
 
-dataset_que_xho <- subset(dataset_que, dataset_que$ques_language=='2')
+dataset_que_xho <- subset(dataset_que, dataset_que$ques_language=='2' | dataset_que$ques_language=='IsiXhosa')
 
 metadata_que_eng <- subset(metadata_que, metadata_que$English=='1')
 
@@ -217,6 +216,7 @@ full_dataset_master <- right_join(dataset_hh_final, dataset_sc_final, by = "reco
 Oversurveyed_squares <- readxl::read_excel("Metadata/Oversurveyed_squares.xlsx", 
                                    col_types = c("text", "numeric", "numeric", 
                                                  "text"))
+
 
 Oversurveyed_squares$AreaCode <- NA
 
@@ -332,9 +332,10 @@ full_dataset_master$oversampled[(full_dataset_master$area_1=="Ndevana" | full_da
 #}
 
 #Generate summary
-#stview(dfSummary(dataset_hhd))
-#summarytools::dfSummary()
-#save(dfSummary(dataset_hhd))
+stview(dfSummary(dataset_hhd))
+summarytools::dfSummary()
+save(dfSummary(dataset_hhd))
+
 
 #rename columns with long names
 colnames(full_dataset_master)[which( colnames(full_dataset_master)=="labelling_hh_on_google_maps_complete" )] <- "hhl_complete"
@@ -344,3 +345,4 @@ colnames(full_dataset_master)[which( colnames(full_dataset_master)=="proof_of_re
 colnames(full_dataset_master)[which( colnames(full_dataset_master)=="internal_quality_control_complete" )] <- "iqc_complete"
 
 write_dta(full_dataset_master, "Data/full_dataset.dta")
+
