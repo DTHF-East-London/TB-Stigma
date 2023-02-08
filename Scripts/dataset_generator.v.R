@@ -1,5 +1,6 @@
 library(dplyr)
 library(tidyverse)
+require(openxlsx)
 library(xlsx)
 
 source("Scripts/functions.R")
@@ -116,10 +117,15 @@ for(field in fields){
   }
 }
 
+library(openxlsx)
+
 #field <- list(data_dictionary$field_name)
 
-file_name_data <- paste("Data/TB Stigma Household_Raw", Sys.Date(),".xlsx")
+file_name_data <- paste("Data/TB Stigma: Household_Raw", Sys.Date(),".xlsx")
 
 writeXlsx(data_dictionary, "DataDictionary", file_name_data, TRUE, FALSE)
 
-writeXlsx(data, "Data", file_name_data, FALSE, FALSE)
+writeXlsx(data, "Data", file_name_data, FALSE)
+
+write.csv(data_dictionary, "Data/daily_review.csv", sep = ',', row.names = FALSE)
+
