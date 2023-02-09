@@ -88,11 +88,11 @@ dataset_screening <- left_join(dataset_screening_1, dataset_screening_2, by = 'r
 
 dataset_consenting <- subset(dataset_sc, select = -c(2:15))
 
-dataset_consenting <- subset(dataset_consenting, dataset_consenting$did_the_person_consent_to == 'Yes' & dataset_consenting$screening_and_consenting_complete == "Complete")
+dataset_consenting <- subset(dataset_consenting, dataset_consenting$screening_and_consenting_complete == 2 | dataset_consenting$screening_and_consenting_complete == "Complete")
 
 dataset_sc_final <- left_join(dataset_screening, dataset_consenting, by = 'record_id')
 
-dataset_sc_final <- subset(dataset_sc_final, dataset_sc_final$did_the_person_consent_to==1 | dataset_sc_final$did_the_person_consent_to=='Yes')
+#dataset_sc_final <- subset(dataset_sc_final, dataset_sc_final$did_the_person_consent_to==1 | dataset_sc_final$did_the_person_consent_to=='Yes')
 
 rm()
 ############################# head_of_household_demographics###################
@@ -332,9 +332,9 @@ full_dataset_master$oversampled[(full_dataset_master$area_1=="Ndevana" | full_da
 #}
 
 #Generate summary
-stview(dfSummary(dataset_hhd))
-summarytools::dfSummary()
-save(dfSummary(dataset_hhd))
+#stview(dfSummary(dataset_hhd))
+#summarytools::dfSummary()
+#save(dfSummary(dataset_hhd))
 
 
 #rename columns with long names
