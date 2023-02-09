@@ -24,4 +24,4 @@ metadata_hhd <- subset(TBStigmaHouseholdSurvey_DataDictionary_2022_08_05, TBStig
 baseline_fields <- c("record_id", 'area', "	screening_date", "lang_fluent", "interest_status", 
                      "preferred_language_to_be_u", "did_the_person_consent_to")
 
-#df_screening_consenting <- df_baseline[screening_and_consenting_fields]
+##df_screening_consenting <- df_baseline[screening_and_consenting_fields]
