@@ -332,9 +332,9 @@ full_dataset_master$oversampled[(full_dataset_master$area_1=="Ndevana" | full_da
 #}
 
 #Generate summary
-stview(dfSummary(dataset_hhd))
-summarytools::dfSummary()
-save(dfSummary(dataset_hhd))
+#stview(dfSummary(dataset_hhd))
+#summarytools::dfSummary()
+#save(dfSummary(dataset_hhd))
 
 
 #rename columns with long names
