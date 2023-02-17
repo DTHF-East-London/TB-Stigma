@@ -58,7 +58,7 @@ dataset_sc <- dataset_sc[c(1:3,13:57)]
 
 dataset_sc <- subset(dataset_sc, !is.na(dataset_sc$redcap_repeat_instrument))
 
-dataset_screening <- subset(dataset_sc, select = -c(16:48))
+dataset_screening <- subset(dataset_sc, select = -c(20:48))
 
 dataset_screening_1 <- subset(dataset_screening, dataset_screening$redcap_repeat_instance==1)
 
@@ -86,9 +86,9 @@ dataset_screening_3 <- subset(dataset_screening_3, select = -c(2:3))
 
 dataset_screening <- left_join(dataset_screening_1, dataset_screening_2, by = 'record_id') %>% left_join(., dataset_screening_3, by = 'record_id')
 
-dataset_consenting <- subset(dataset_sc, select = -c(2:15))
+dataset_consenting <- subset(dataset_sc, select = -c(2:19))
 
-dataset_consenting <- subset(dataset_consenting, dataset_consenting$screening_and_consenting_complete == 2 | dataset_consenting$screening_and_consenting_complete == "Complete")
+dataset_consenting <- subset(dataset_consenting, !is.na(dataset_consenting$intro_script_2) & (dataset_consenting$screening_and_consenting_complete == 2 | dataset_consenting$screening_and_consenting_complete == "Complete"))
 
 dataset_sc_final <- left_join(dataset_screening, dataset_consenting, by = 'record_id')
 
