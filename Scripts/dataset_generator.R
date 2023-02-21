@@ -344,5 +344,4 @@ colnames(full_dataset_master)[which( colnames(full_dataset_master)=="head_of_hou
 colnames(full_dataset_master)[which( colnames(full_dataset_master)=="proof_of_reimbursement_and_snack_complete" )] <- "prs_complete"
 colnames(full_dataset_master)[which( colnames(full_dataset_master)=="internal_quality_control_complete" )] <- "iqc_complete"
 
-write_dta(full_dataset_master, "Data/full_dataset.dta")
-
+write_dta(full_dataset_master, "Data/full_dataset.dta") 
