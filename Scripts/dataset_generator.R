@@ -88,7 +88,7 @@ dataset_screening <- left_join(dataset_screening_1, dataset_screening_2, by = 'r
 
 dataset_consenting <- subset(dataset_sc, select = -c(2:19))
 
-dataset_consenting <- subset(dataset_consenting, !is.na(dataset_consenting$intro_script_2) & (dataset_consenting$screening_and_consenting_complete == 2 | dataset_consenting$screening_and_consenting_complete == "Complete"))
+dataset_consenting <- subset(dataset_consenting, dataset_consenting$screening_for_eligibility=='1' & (dataset_consenting$screening_and_consenting_complete == 2 | dataset_consenting$screening_and_consenting_complete == "Complete"))
 
 dataset_sc_final <- left_join(dataset_screening, dataset_consenting, by = 'record_id')
 
