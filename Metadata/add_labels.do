@@ -581,7 +581,7 @@ label variable study_note_avail_1 "Are there study note that you would like to r
 label variable briefly_specify_the_nature_1 "Include study notes here: "
 label variable specify_the_seriousness_of_1 "Specify the seriousness of the event"
 label variable the_study_note_is_addresse_1 "The study note is addressed to the following person"
-label variable study_notes_complete "Complete?"
+label variable study_notes_complete_1 "Complete?"
 label variable additional_notes_1 "Additional Notes"
 label variable ra_name_1 "Staff Name"
 label variable date_1 "Date"
