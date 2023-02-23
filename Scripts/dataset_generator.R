@@ -345,3 +345,16 @@ colnames(full_dataset_master)[which( colnames(full_dataset_master)=="proof_of_re
 colnames(full_dataset_master)[which( colnames(full_dataset_master)=="internal_quality_control_complete" )] <- "iqc_complete"
 
 write_dta(full_dataset_master, "Data/full_dataset.dta") 
+
+full_dataset_master[full_dataset_master == 'NI'] <- NA
+
+full_dataset_master[full_dataset_master == 'NAV'] <- NA
+
+write_dta(full_dataset_master, "Data/full_dataset.dta")
+
+write.csv2(full_dataset_master, "Data/full_dataset.csv", row.names = FALSE, na = '')
+
+openxlsx::write.xlsx(full_dataset_master, "Data/full_dataset.xlsx", rowNames = FALSE, keepNA = FALSE)
+
+#xlsx::write.xlsx(full_dataset_master, "Data/full_dataset.xlsx", row.names = FALSE, showNA = FALSE)
+
