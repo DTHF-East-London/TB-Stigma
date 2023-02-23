@@ -59,7 +59,7 @@ getREDCapRecords <- function(events, forms, selected_fields){
     forms = forms,
     records = NULL,
     events = events,
-    labels = TRUE,
+    labels = FALSE,
     dates = FALSE,
     survey = TRUE,
     dag = TRUE,
