@@ -350,6 +350,8 @@ full_dataset_master[full_dataset_master == 'NI'] <- NA
 
 full_dataset_master[full_dataset_master == 'NAV'] <- NA
 
+full_dataset_master$instruct_part[is.na(full_dataset_master$instruct_part) & full_dataset_master$hhd_complete=='2'] <- 0
+
 write_dta(full_dataset_master, "Data/full_dataset.dta")
 
 write.csv2(full_dataset_master, "Data/full_dataset.csv", row.names = FALSE, na = '')
