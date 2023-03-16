@@ -40,11 +40,11 @@ drop date4
 rename _date_ date4
 format date4 %dM_d,_CY
 
-tostring end_time, replace
-gen double _temp_ = Clock(end_time,"YMDhm")
-drop end_time
-rename _temp_ end_time
-format end_time %tCMonth_dd,_CCYY_HH:MM
+*tostring end_time, replace
+*gen double _temp_ = Clock(end_time,"YMDhm")
+*drop end_time
+*rename _temp_ end_time
+*format end_time %tCMonth_dd,_CCYY_HH:MM
 
 tostring date2, replace
 gen _date_ = date(date2,"YMD")
@@ -52,11 +52,11 @@ drop date2
 rename _date_ date2
 format date2 %dM_d,_CY
 
-tostring date, replace
-gen _date_ = date(date,"YMD")
-drop date
-rename _date_ date
-format date %dM_d,_CY
+*tostring date, replace
+*gen _date_ = date(date,"YMD")
+*drop date
+*rename _date_ date
+*format date %dM_d,_CY
 
 tostring date3, replace
 gen _date_ = date(date3,"YMD")
