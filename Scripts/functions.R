@@ -5,7 +5,6 @@ library(openxlsx)
 library(RMySQL)
 
 #rcon <- NULL
-#report_id <- ''
 
 source("Scripts/missingSummary.R")
 
