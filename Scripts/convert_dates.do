@@ -14,7 +14,7 @@ tostring screening_date_2, replace
 gen _date_ = date(screening_date_2,"YMD")
 drop screening_date_2
 rename _date_ screening_date_2
-format screening_date_2 %dM_d,_CY
+*format screening_date_2 %dM_d,_CY
 
 tostring screening_date_3, replace
 gen _date_ = date(screening_date_3,"YMD")
