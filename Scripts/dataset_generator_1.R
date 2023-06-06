@@ -43,12 +43,12 @@ for(event in events){
   
 }
 
-raw_data_baseline_arm_1 <- raw_data_baseline_arm_1 %>% 
-  select(record_id, contains("tbip_q1_pc_q")) %>% 
-  rowwise() %>%
-  mutate(tbip_q1_pc_count = sum(!is.na)
+#raw_data_baseline_arm_1 <- raw_data_baseline_arm_1 %>% 
+#  select(record_id, contains("tbip_q1_pc_q")) %>% 
+#  rowwise() %>%
+#  mutate(tbip_q1_pc_count = sum(!is.na)
          
-raw_data_baseline_arm_1 <- raw_data_baseline_arm_1 %>%       
-  mutate(tbip_q1_pc_count = rowSums(!is.na(contains("tbip_q1_pc_q")))) %>%
-  relocate(.data, after=tbip_q1_pc_q14)
+#raw_data_baseline_arm_1 <- raw_data_baseline_arm_1 %>%       
+#  mutate(tbip_q1_pc_count = rowSums(!is.na(contains("tbip_q1_pc_q")))) %>%
+#  relocate(.data, after=tbip_q1_pc_q14)
 
