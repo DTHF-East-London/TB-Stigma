@@ -27,10 +27,10 @@ tab1 s6_q1 - s6_q10 if did_the_person_consent_to==1 & oversampled==0, missing
 
 *Repeat the above tabulation by language
 *sort ques_language
-tab2 (s6_q1 - s6_q10) ques_language if did_the_person_consent_to==1& oversampled==0, missing
+tab2 (s6_q1 - s6_q10) ques_language if did_the_person_consent_to==1 & oversampled==0, missing
 
 *By how the survey was completed (participant or research assistant)
-tab2 (s6_q1 - s6_q10) instruct_part if  did_the_person_consent_to==0 , missing
+tab2 (s6_q1 - s6_q10) instruct_part if  did_the_person_consent_to==0 & oversampled==0, missing
 
 *this code generates a variable for the number of missing items
 egen tbstigma_miss=rowmiss(s6_q1 - s6_q10)
@@ -75,7 +75,7 @@ bysort area_1 study_community_1: egen community_tb_max=max(tbstigma_mean)
 bysort area_1 study_community_1: gen first=1 if _n==1
 
 *Create community_stats (subset)
-frame put area_1  study_community_1 community_tb_obs community_tbstigma_score community_tb_sd community_tb_min community_tb_max if first==1, into(community_stats)
+frame put area_1  study_community_1 community_tb_obs community_tbstigma_score community_tb_sd community_tb_min community_tb_max if did_the_person_consent_to==1 & oversampled==0 & first==1, into(community_stats)
 
 *Switch to community_stats frame
 frame change community_stats
@@ -123,7 +123,7 @@ tab s5_q6_p s5_q6_p_rev
 
 **1. Evaluate the performance of the stigma items**
 *this output evaluates the distribution of response items for all the surveys
-tab1 s5_q1_p - s5_q5_p s5_q6_p_rev s5_q7_p - s5_q14_p if did_the_person_consent_to==1  & oversampled==0, missing
+tab1 s5_q1_p - s5_q5_p s5_q6_p_rev s5_q7_p - s5_q14_p if did_the_person_consent_to==1 & oversampled==0, missing
 
 *Repeat the above tabulation by language
 sort ques_language
@@ -182,7 +182,7 @@ bysort area_1 study_community_1: egen community_hiv_max=max(hivstigma_mean)
 frame drop community_stats
 
 *Create community_stats (subset)
-frame put area_1  study_community_1 community_hiv_obs community_hivstigma_score community_hiv_sd community_hiv_min community_hiv_max if first==1, into(community_stats)
+frame put area_1  study_community_1 community_hiv_obs community_hivstigma_score community_hiv_sd community_hiv_min community_hiv_max if did_the_person_consent_to==1 & oversampled==0 & first==1, into(community_stats)
 
 *Switch to community_stats frame
 frame change community_stats
@@ -213,3 +213,4 @@ frame put area_1 area_obs area_hivstigma_score area_sd area_min area_max if firs
 frame change area_stats
 
 export excel using "C:\Users\freedomm\OneDrive - foundation.co.za\Documents\Projects\TB Stigma\TB-Stigma\Data\Area_Community_TB_Stigma_Scores.xls", sheet("Area HIV Stigma Scores") sheetreplace firstrow(variables)
+

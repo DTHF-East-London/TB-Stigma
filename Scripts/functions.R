@@ -32,12 +32,17 @@ getREDCapConnection <- function(study){
     print(dw$redcap_api_url)
     rcon <<- redcapConnection(
       url = dw$redcap_api_url,
-      token = dw$token)
+      token = dw$token_1)
+  }else if(study=='2'){
+    print(dw$redcap_api_url)
+    rcon <<- redcapConnection(
+      url = dw$redcap_api_url,
+      token = dw$token_2)
   }else{
     print(dw$redcap_api_url)
     rcon <<- redcapConnection(
       url = dw$redcap_api_url,
-      token = dw$token_p)
+      token = dw$token)
   }
   
   
@@ -50,16 +55,16 @@ getMissingSummary <- function(){
                                     redcap_project_token = dw$token, use_ssl = FALSE)
 }
 
-getREDCapRecords <- function(events, forms, selected_fields){
+getREDCapRecords <- function(events, forms, selected_fields, labels){
   records <- exportRecords(
     rcon,
-    factors = FALSE,
+    factors = labels,
     fields = selected_fields,
     forms = forms,
     records = NULL,
     events = events,
-    labels = FALSE,
-    dates = FALSE,
+    labels = labels,
+    dates = TRUE,
     survey = TRUE,
     dag = TRUE,
     checkboxLabels = TRUE,
