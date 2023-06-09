@@ -7,6 +7,7 @@ library(RMySQL)
 library(summarytools)
 library(readxl)
 library(haven)
+library(xlsx)
 
 source("Scripts/functions.R")
 
