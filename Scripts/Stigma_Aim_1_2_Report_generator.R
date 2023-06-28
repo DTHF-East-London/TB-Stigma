@@ -4,7 +4,17 @@ source("Scripts/functions.R")
 
 source("Scripts/dataset_generator_1.R")
 
-wb <- xlsx::loadWorkbook("data/TB Stigma_Aim 1 and Aim 2_20230613.xlsx")
+options(java.parameters = "- Xmx2048m")
+
+report_date <- as.POSIXct('2023-06-24 00:00:00',tz="Africa/Johannesburg")
+
+raw_data_baseline_arm_1 <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_date < report_date)
+
+raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhcl_date < report_date)
+
+raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, raw_data_hhci_visit_info_arm_1$hhc_date_sched < report_date)
+
+wb <- xlsx::loadWorkbook("Metadata/TB_Stigma_Aim_1_2_template.xlsx")
 
 works_sheets <- xlsx::getSheets(wb)
 
@@ -14,29 +24,29 @@ rows <- getRows(tmp_sheet)
 
 cells <- getCells(rows)
 
-table()
+today <- format(Sys.time(), "%Y-%m-%d")
+
+filename_new <- paste("Data/TB_Stigma_Aim_1_2", today, ".xlsx")
 
 #Screening
-
-setCellValue(cells[["3.3"]], nrow(raw_data_baseline_arm_1))
 setCellValue(cells[["4.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed')))
-setCellValue(cells[["5.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_end_ip=='End Not-Eligible')))
-setCellValue(cells[["6.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_below_age=='yes <18 years old')))
-setCellValue(cells[["7.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_q17=='No Lives outside study communities')))
-setCellValue(cells[["8.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_q8=='No Not Pulmonary TB Positive')))
-setCellValue(cells[["9.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_language=='No Not fluent in Xhosa or English')))
-setCellValue(cells[["10.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_q14=='No household contacts')))
-setCellValue(cells[["11.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_existing=='Yes Enrolled on other Cohort / HHC')))
+setCellValue(cells[["5.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_end_ip=='End')))
+setCellValue(cells[["6.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_below_age=='Yes' | raw_data_baseline_arm_1$tbip_sc_below_age=='No')))
+setCellValue(cells[["7.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_q17=='No')))
+setCellValue(cells[["8.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_q8=='No')))
+setCellValue(cells[["9.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_language=='No')))
+setCellValue(cells[["10.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_q14=='No')))
+setCellValue(cells[["11.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_existing=='Yes')))
+setCellValue(cells[["12.3"]], nrow(raw_data_baseline_arm_1))
 
 #Enrolment
-
-setCellValue(cells[["17.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes Agreed to participate')))
-setCellValue(cells[["18.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_end_ip=='No Refused to participate')))
-setCellValue(cells[["19.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_refuse==' Not interested')))
-setCellValue(cells[["20.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_refuse==' Enrolled in another study')))
-setCellValue(cells[["21.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_refuse=='Do not have time')))
-setCellValue(cells[["22.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_refuse=='Tired')))
-setCellValue(cells[["23.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_refuse=='Other')))
+setCellValue(cells[["17.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes')))
+setCellValue(cells[["18.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='No')))
+setCellValue(cells[["19.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_refuse___1=='I\'m not interested')))
+setCellValue(cells[["20.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_refuse___2=='I am enrolled in another study')))
+setCellValue(cells[["21.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_refuse___3=='I do not have time')))
+setCellValue(cells[["22.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_refuse___4=='I am tired')))
+setCellValue(cells[["23.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_refuse___5=='Other')))
 
 
 #Caregiver eligibility
@@ -48,35 +58,28 @@ setCellValue(cells[["31.4"]], nrow(subset(raw_data_baseline_arm_1, raw_data_base
 
 #Aim 1 - Participant groups Newly initiated & Aim 1- Study visits / Retention
 
-setCellValue(cells[["39.4"]], nrow(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14 & raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed Eligible'))
-setCellValue(cells[["39.8"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14 & raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes Enrolled')))
-setCellValue(cells[["39.9"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes Permission to visit HH')))
-setCellValue(cells[["39.10"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes Permission to visit HH')))
-setCellValue(cells[["39.11"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes Permission to visit HH')))
-setCellValue(cells[["39.12"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes Permission to visit HH')))
+setCellValue(cells[["39.4"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14 & raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed')))
+setCellValue(cells[["39.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14 & raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes')))
+setCellValue(cells[["39.7"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14 & raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes')))
+setCellValue(cells[["39.8"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14 & (raw_data_baseline_arm_1$index_questionnaire_3_complete=='Complete' | raw_data_baseline_arm_1$index_questionnaire_3_complete=='Unverified'))))
+setCellValue(cells[["39.9"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14 & difftime(Sys.time(), raw_data_baseline_arm_1$tbip_sc_ini_date, unit ='days')>=60)))
+setCellValue(cells[["39.10"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14 & difftime(Sys.time(), raw_data_baseline_arm_1$tbip_sc_ini_date, unit ='days')>=60)))
+setCellValue(cells[["39.12"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes')))
+setCellValue(cells[["39.13"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes')))
 
 
 ##Rx Experienced
 
-setCellValue(cells[["40.4"]], nrow(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14 & raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed Eligible'))
-setCellValue(cells[["40.8"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14 & raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes Enrolled')))
-setCellValue(cells[["40.9"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes Permission to visit HH')))
-setCellValue(cells[["40.10"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes Permission to visit HH')))
-setCellValue(cells[["40.11"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes Permission to visit HH')))
-setCellValue(cells[["40.12"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes Permission to visit HH')))
+setCellValue(cells[["40.4"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed')))
+setCellValue(cells[["40.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes')))
+setCellValue(cells[["40.7"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes')))
+setCellValue(cells[["40.8"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & (raw_data_baseline_arm_1$index_questionnaire_3_complete=='Complete' | raw_data_baseline_arm_1$index_questionnaire_3_complete=='Unverified'))))
 
 ##Under 18 with caregiver
-
-setCellValue(cells[["41.4"]], nrow(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14 & raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed Eligible'))
-setCellValue(cells[["41.8"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14 & raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes Enrolled')))
-setCellValue(cells[["41.9"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes Permission to visit HH')))
-setCellValue(cells[["41.10"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes Permission to visit HH')))
-setCellValue(cells[["41.11"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes Permission to visit HH')))
-setCellValue(cells[["41.12"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes Permission to visit HH')))
+setCellValue(cells[["41.7"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14 & raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes')))
 
 
-#Clinic enrolment rate
-
+#Clinic screening rate
 setCellValue(cells[["47.4"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_q5=='Empilweni Gompo CHC')))
 setCellValue(cells[["48.4"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_q5=='Pefferville Clinic')))
 setCellValue(cells[["49.4"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_q5=='Duncan Village CHC')))
@@ -96,58 +99,143 @@ setCellValue(cells[["62.4"]], nrow(subset(raw_data_baseline_arm_1, raw_data_base
 setCellValue(cells[["63.4"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_q5=='Gompo B Jwayi Clinic')))
 setCellValue(cells[["64.4"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_q5=='NU 12 Clinic')))
 
+#Clinic eligible rate
+setCellValue(cells[["47.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='Empilweni Gompo CHC')))
+setCellValue(cells[["48.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='Pefferville Clinic')))
+setCellValue(cells[["49.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='Duncan Village CHC')))
+setCellValue(cells[["50.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='Gompo C Jabavu Clinic')))
+setCellValue(cells[["51.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='Chris Hani Clinic')))
+setCellValue(cells[["52.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='Luyolo NU 9 Clinic')))
+setCellValue(cells[["53.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='Alphendale Clinic')))
+setCellValue(cells[["54.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='John Dube Clinic')))
+setCellValue(cells[["55.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='Fezeka NU 3 Clinic')))
+setCellValue(cells[["56.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='Gompo A Ndende Clinic')))
+setCellValue(cells[["57.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='Ndevana Clinic')))
+setCellValue(cells[["58.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='Philani NU 1 Clinic')))
+setCellValue(cells[["59.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='Aspiranza Clinic')))
+setCellValue(cells[["60.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='Ginsberg Clinic')))
+setCellValue(cells[["61.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='Zwelitsha Zone 5 Clinic')))
+setCellValue(cells[["62.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='Masakhane Clinic (Zwelitsha)')))
+setCellValue(cells[["63.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='Gompo B Jwayi Clinic')))
+setCellValue(cells[["64.5"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed' & raw_data_baseline_arm_1$tbip_sc_q5=='NU 12 Clinic')))
+
+
+#Clinic enrolled rate
+setCellValue(cells[["47.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='Empilweni Gompo CHC')))
+setCellValue(cells[["48.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='Pefferville Clinic')))
+setCellValue(cells[["49.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='Duncan Village CHC')))
+setCellValue(cells[["50.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='Gompo C Jabavu Clinic')))
+setCellValue(cells[["51.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='Chris Hani Clinic')))
+setCellValue(cells[["52.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='Luyolo NU 9 Clinic')))
+setCellValue(cells[["53.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='Alphendale Clinic')))
+setCellValue(cells[["54.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='John Dube Clinic')))
+setCellValue(cells[["55.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='Fezeka NU 3 Clinic')))
+setCellValue(cells[["56.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='Gompo A Ndende Clinic')))
+setCellValue(cells[["57.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='Ndevana Clinic')))
+setCellValue(cells[["58.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='Philani NU 1 Clinic')))
+setCellValue(cells[["59.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='Aspiranza Clinic')))
+setCellValue(cells[["60.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='Ginsberg Clinic')))
+setCellValue(cells[["61.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='Zwelitsha Zone 5 Clinic')))
+setCellValue(cells[["62.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='Masakhane Clinic (Zwelitsha)')))
+setCellValue(cells[["63.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='Gompo B Jwayi Clinic')))
+setCellValue(cells[["64.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_q5=='NU 12 Clinic')))
 
 ##Participant time
+setCellValue(cells[["69.3"]], mean(raw_data_baseline_arm_1$tbip_q3_duration, na.rm = TRUE))
+setCellValue(cells[["70.3"]], median(raw_data_baseline_arm_1$tbip_q3_duration, na.rm = TRUE))
+setCellValue(cells[["71.3"]], names(sort(-table(raw_data_baseline_arm_1$tbip_q3_duration)))[1])
 
-setCellValue(cells[["69.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_q3_duration=='mean')))
-setCellValue(cells[["70.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_q3_duration=='Median')))
-setCellValue(cells[["71.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_q3_duration=='Mode')))
+
+xlsx::saveWorkbook(wb, filename_new)
+
+xlsx::forceFormulaRefresh(filename_new)
 
 
+wb <- xlsx::loadWorkbook(filename_new)
+
+works_sheets <- xlsx::getSheets(wb)
+
+tmp_sheet <- works_sheets[["Aim 1 - Household Contacts"]]
+
+rows <- getRows(tmp_sheet)
+
+cells <- getCells(rows)
 
 #HHCI: Screening & Enrolment
 
 #Households listed by IPs
 
-setCellValue(cells[["4.3"]], nrow(raw_data_hhci_visit_arm_1))
+setCellValue(cells[["4.3"]], nrow(raw_data_hhci_info_arm_1 %>% distinct(record_id)))
 
 #Total households visited
 
-setCellValue(cells[["7.3"]], nrow(subset(raw_data_hhci_visit_arm_1, raw_data_hhci_visit_arm_1$tbip_sc_eligible=='Households visited once')))
-setCellValue(cells[["8.3"]], nrow(subset(raw_data_hhci_visit_arm_1, raw_data_hhci_visit_arm_1$tbip_sc_end_ip==' Households visited twice')))
-setCellValue(cells[["9.3"]], nrow(subset(raw_data_hhci_visit_arm_1, raw_data_hhci_visit_arm_1$tbip_sc_end_ip=='Households visited thrice')))
+setCellValue(cells[["6.3"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_sc_visit_attempt___1=='First' | hhc_sc_visit_attempt___2=='Second' | hhc_sc_visit_attempt___3=='Third') %>% distinct(record_id)))
+setCellValue(cells[["7.3"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_sc_visit_attempt___1=='First') %>% distinct(record_id)))
+setCellValue(cells[["8.3"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_sc_visit_attempt___2=='Second') %>% distinct(record_id)))
+setCellValue(cells[["9.3"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_sc_visit_attempt___3=='Third') %>% distinct(record_id)))
 
 
 #HHCs listed by IPs
+setCellValue(cells[["11.3"]], nrow(subset(raw_data_hhci_info_arm_1, !is.na(raw_data_hhci_info_arm_1$hhc_sc_age_calc))))
+setCellValue(cells[["12.3"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_age_calc>=18)))
+setCellValue(cells[["13.3"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_age_calc<18)))
 
-setCellValue(cells[["12.3"]], nrow(subset(raw_data_hhci_visit_arm_1, raw_data_hhci_visit_arm_1$hhc_sc_age_calce>=18)))
-setCellValue(cells[["13.3"]], nrow(subset(raw_data_hhci_visit_arm_1, raw_data_hhci_visit_arm_1$hhc_sc_age_calc<18)))
-
+#Screened for eligibility
+setCellValue(cells[["15.3"]], nrow(subset(raw_data_hhci_info_arm_1, !is.na(raw_data_hhci_info_arm_1$hhc_sc_clinic_visit))))
 
 #Not Eligible
-
-setCellValue(cells[["18.3"]], nrow(subset(raw_data_hhci_visit_arm_1, raw_data_hhci_visit_arm_1$hhc_sc_clinic_visit=='Yes Visited clinic before HHCI')))
-setCellValue(cells[["19.3"]], nrow(subset(raw_data_hhci_visit_arm_1, raw_data_hhci_visit_arm_1$hhc_sc_symptomatic_confirm=='Proceed TB asymptomatic')))
-setCellValue(cells[["20.3"]], nrow(subset(raw_data_hhci_visit_arm_1, raw_data_hhci_visit_arm_1$hhc_sc_cons_dir_1_hhm=='Proceed <18 Years Old')))
+setCellValue(cells[["17.3"]], nrow(subset(raw_data_hhci_info_arm_1, !is.na(raw_data_hhci_info_arm_1$hhc_sc_clinic_visit) & 
+                                            is.na(raw_data_hhci_info_arm_1$hhc_sc_cons_dir_3))))
+setCellValue(cells[["18.3"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_clinic_visit=='Yes')))
+setCellValue(cells[["19.3"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_weight_loss=='No' &
+                                            raw_data_hhci_info_arm_1$hhc_sc_night_sweat=='No' & 
+                                            raw_data_hhci_info_arm_1$hhc_sc_coughing=='No' &
+                                            raw_data_hhci_info_arm_1$hhc_sc_fever=='No')))
+setCellValue(cells[["20.3"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_cons_dir_1_hhm=='Proceed')))
 
 #Eligible 
-setCellValue(cells[["22.3"]], nrow(subset(raw_data_hhci_visit_arm_1, raw_data_hhci_visit_arm_1$hhc_sc_consent_provided=='Yes Agreed to participate')))
-setCellValue(cells[["23.3"]], nrow(subset(raw_data_hhci_visit_arm_1, raw_data_hhci_visit_arm_1$hhc_sc_consent_provided=='No Refused to participate')))
+setCellValue(cells[["21.3"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_cons_dir_3=='Proceed')))
+setCellValue(cells[["22.3"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_consent_provided=='Yes')))
+setCellValue(cells[["23.3"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_consent_provided=='No')))
+setCellValue(cells[["24.3"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_competent=='No')))
+
+#Households with enrolled HHCs
+setCellValue(cells[["25.3"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_sc_verbal_consent=='Yes') %>% distinct(record_id)))
+
+raw_data_hhci_info_arm_1 <- raw_data_hhci_info_arm_1 %>% mutate(hhc_days_since_referral = difftime(today, as.POSIXct(as.Date(hhc_sc_date_cons, format = '%Y-%m-%d')), units = 'days')) %>% relocate(hhc_days_since_referral, .after = 'hhc_sc_date_cons')
+raw_data_hhci_info_arm_1 <- raw_data_hhci_info_arm_1 %>% mutate(hhc_pc_days_to_present = difftime(as.POSIXct(as.Date(hhc_pc_presentation_date, format = '%Y-%m-%d')), as.POSIXct(as.Date(hhc_sc_date_cons, format = '%Y-%m-%d')), units = 'days')) %>% relocate(hhc_pc_days_to_present, .after = 'hhc_sc_date_cons')
+raw_data_hhci_info_arm_1 <- raw_data_hhci_info_arm_1 %>% mutate(hhc_pt_days_to_present = difftime(as.POSIXct(as.Date(hhc_pt_return_date, format = '%Y-%m-%d')), as.POSIXct(as.Date(hhc_sc_date_cons, format = '%Y-%m-%d')), units = 'days')) %>% relocate(hhc_pt_days_to_present, .after = 'hhc_sc_date_cons')
 
 
 #Outcomes 
+#Extracted within the 30 Day window
+setCellValue(cells[["31.6"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_days_since_referral<=30 & hhc_sc_verbal_consent=='Yes' )))
+setCellValue(cells[["32.6"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_days_since_referral<=30 & hhc_pt_intro=='Proceed' & hhc_pt_return_clinic=='Yes')))
+setCellValue(cells[["33.6"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_days_since_referral<=30 & hhc_pt_intro=='Proceed' & hhc_pt_collect_sputum=='Yes')))
+setCellValue(cells[["34.6"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_days_since_referral<=30 & hhc_sc_verbal_consent=='Yes' & is.na(hhc_pt_return_clinic))))
 
-setCellValue(cells[["29.3"]], nrow(subset(raw_data_hhci_visit_arm_1, raw_data_hhci_visit_arm_1$hhc_sc_clinic_visit=='Yes Presented at clinic')))
-setCellValue(cells[["30.3"]], nrow(subset(raw_data_hhci_visit_arm_1, raw_data_hhci_visit_arm_1$hhc_pc_provide_sputum=='Yes Provided sputum')))
-setCellValue(cells[["31.3"]], nrow(subset(raw_data_hhci_visit_arm_1, raw_data_hhci_visit_arm_1$hhc_sc_clinic_visit=='No Not presented yet')))
+#Self reported after 30 days
+setCellValue(cells[["36.3"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_sc_verbal_consent=='Yes' & hhc_days_since_referral>30)))
+setCellValue(cells[["37.3"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_days_since_referral>30 & (hhc_pc_been_facility=='Yes, I remember the date' | hhc_pc_been_facility=='Yes, I don\'t remember the date'))))
+setCellValue(cells[["38.3"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_days_since_referral>30 & (hhc_pc_been_facility=='Yes, I remember the date' & hhc_pc_days_to_present<=30))))
+setCellValue(cells[["39.3"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_days_since_referral>30 & (hhc_pc_been_facility=='Yes, I remember the date' & hhc_pc_days_to_present>30))))
+setCellValue(cells[["40.3"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_days_since_referral>30 & hhc_pc_been_facility=='Yes, I don\'t remember the date')))
+setCellValue(cells[["41.3"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_days_since_referral>30 & (hhc_pc_been_facility=='Yes, I remember the date' | hhc_pc_been_facility=='Yes, I don\'t remember the date') & hhc_pc_provide_sputum=='Yes')))
+setCellValue(cells[["42.3"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_days_since_referral>30 & hhc_pc_been_facility=='No')))
+setCellValue(cells[["43.3"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_sc_verbal_consent=='Yes' & hhc_days_since_referral>30 & is.na(hhc_pc_been_facility))))
 
+#Extracted after 30 days
+setCellValue(cells[["36.6"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_sc_verbal_consent=='Yes' & hhc_days_since_referral>30)))
+setCellValue(cells[["37.6"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_days_since_referral>30 & (hhc_pt_return_clinic=='Yes, I remember the date' | hhc_pt_return_clinic=='Yes, I don\'t remember the date'))))
+setCellValue(cells[["38.6"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_days_since_referral>30 & (hhc_pt_return_clinic=='Yes, I remember the date') & hhc_pt_days_to_present<=30)))
+setCellValue(cells[["39.6"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_days_since_referral>30 & (hhc_pt_return_clinic=='Yes, I remember the date') & hhc_pt_days_to_present>30)))
+setCellValue(cells[["40.6"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_days_since_referral>30 & (hhc_pt_return_clinic=='Yes, I don\'t remember the date'))))
+setCellValue(cells[["41.6"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_days_since_referral>30 & (hhc_pt_return_clinic=='Yes, I remember the date' | hhc_pt_return_clinic=='Yes, I don\'t remember the date') & hhc_pt_collect_sputum=='Yes')))
+setCellValue(cells[["42.6"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_days_since_referral>30 & hhc_pt_return_clinic=='No')))
+setCellValue(cells[["43.6"]], nrow(raw_data_hhci_info_arm_1 %>% filter(hhc_sc_verbal_consent=='Yes' & hhc_days_since_referral>30 & is.na(hhc_pt_return_clinic))))
 
-setCellValue(cells[["34.3"]], nrow(subset(raw_data_hhci_visit_arm_1, raw_data_hhci_visit_arm_1$tbip_sc_end_ip=='Presented, more than 30 days')))
-setCellValue(cells[["35.3"]], nrow(subset(raw_data_hhci_visit_arm_1, raw_data_hhci_visit_arm_1$hhc_sc_clinic_visit=='No Did not present ')))
-
-
-xlsx::forceFormulaRefresh(paste("Data/TB Stigma_Aim 1 and Aim 2_20230613", today, ".xlsx"))
-xlsx::saveWorkbook(wb, paste("Data/TBStigma_weekly_Report_june_2023", today, ".xlsx"))
+xlsx::forceFormulaRefresh(filename_new)
+xlsx::saveWorkbook(wb, filename_new)
 
 print("Outcome - End")
 
