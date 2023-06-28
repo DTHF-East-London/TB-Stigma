@@ -8,8 +8,12 @@ library(summarytools)
 library(readxl)
 library(haven)
 library(xlsx)
+library(tableone)
+library(survival)
+
 
 source("Scripts/functions.R")
+
 
 #Get REDCap connection
 print("getting REDCap connection")
