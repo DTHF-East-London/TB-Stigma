@@ -44,6 +44,9 @@ for(event in events){
   
 }
 
+#Adding additional calculated variables
+raw_data_hhci_info_arm_1$hhc_
+
 #raw_data_baseline_arm_1 <- raw_data_baseline_arm_1 %>% 
 #  select(record_id, contains("tbip_q1_pc_q")) %>% 
 #  rowwise() %>%
