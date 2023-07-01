@@ -47,6 +47,12 @@ for(event in events){
 #Adding additional calculated variables
 raw_data_hhci_info_arm_1$hhc_
 
+#Code missing information as NI
+levels(raw_data_hhci_info_arm_1$hhc_sc_clinic_visit) <- c('No', 'Yes', 'NI')
+raw_data_hhci_info_arm_1$hhc_sc_clinic_visit[!is.na(raw_data_hhci_info_arm_1$hhc_sc_verbal_consent)] <- 'NI'
+levels(raw_data_hhci_info_arm_1$hhc_sc_provide_sputum) <- c('No', 'Yes', 'NI')
+raw_data_hhci_info_arm_1$hhc_sc_provide_sputum[!is.na(raw_data_hhci_info_arm_1$hhc_sc_verbal_consent)] <- 'NI'
+
 #raw_data_baseline_arm_1 <- raw_data_baseline_arm_1 %>% 
 #  select(record_id, contains("tbip_q1_pc_q")) %>% 
 #  rowwise() %>%
