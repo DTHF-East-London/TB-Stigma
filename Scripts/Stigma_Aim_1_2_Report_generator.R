@@ -6,13 +6,13 @@ source("Scripts/dataset_generator_1.R")
 
 options(java.parameters = "- Xmx2048m")
 
-report_date <- as.POSIXct('2023-07-03 00:00:00',tz="Africa/Johannesburg")
+#report_date <- as.POSIXct('2023-07-03 00:00:00',tz="Africa/Johannesburg")
 
-raw_data_baseline_arm_1 <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_date <= report_date)
+#raw_data_baseline_arm_1 <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_date <= report_date)
 
-raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhcl_date <= report_date)
+#raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhcl_date <= report_date)
 
-raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, raw_data_hhci_visit_info_arm_1$hhc_date_sched <= report_date)
+#raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, raw_data_hhci_visit_info_arm_1$hhc_date_sched <= report_date)
 
 wb <- xlsx::loadWorkbook("Metadata/TB_Stigma_Aim_1_2_template.xlsx")
 
@@ -317,11 +317,6 @@ setCellValue(cells[["29.3"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhc
 setCellValue(cells[["30.3"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_consent_provided=='Yes')))
 setCellValue(cells[["31.3"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_consent_provided=='No')))
 setCellValue(cells[["32.3"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_competent=='No')))
-
-raw_data_hhci_info_arm_1 <- raw_data_hhci_info_arm_1 %>% mutate(hhc_days_since_referral = difftime(today, as.POSIXct(as.Date(hhc_sc_date_cons, format = '%Y-%m-%d')), units = 'days')) %>% relocate(hhc_days_since_referral, .after = 'hhc_sc_date_cons')
-raw_data_hhci_info_arm_1 <- raw_data_hhci_info_arm_1 %>% mutate(hhc_pc_days_to_present = difftime(as.POSIXct(as.Date(hhc_pc_presentation_date, format = '%Y-%m-%d')), as.POSIXct(as.Date(hhc_sc_date_cons, format = '%Y-%m-%d')), units = 'days')) %>% relocate(hhc_pc_days_to_present, .after = 'hhc_sc_date_cons')
-raw_data_hhci_info_arm_1 <- raw_data_hhci_info_arm_1 %>% mutate(hhc_pt_days_to_present = difftime(as.POSIXct(as.Date(hhc_pt_return_date, format = '%Y-%m-%d')), as.POSIXct(as.Date(hhc_sc_date_cons, format = '%Y-%m-%d')), units = 'days')) %>% relocate(hhc_pt_days_to_present, .after = 'hhc_sc_date_cons')
-
 
 #Outcomes 
 #Extracted within the 30 Day window
