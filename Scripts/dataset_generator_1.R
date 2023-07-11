@@ -69,6 +69,11 @@ raw_data_hhci_info_arm_1$hhc_sc_provide_sputum[!is.na(raw_data_hhci_info_arm_1$h
 
 raw_data_baseline_arm_1$tbip_sc_eligible[raw_data_baseline_arm_1$record_id == '145'] <- 'Proceed'
 
+raw_data_hhci_info_arm_1 <- raw_data_hhci_info_arm_1 %>% mutate(hhc_days_since_referral = difftime(today, as.POSIXct(as.Date(hhc_sc_date_cons, format = '%Y-%m-%d')), units = 'days')) %>% relocate(hhc_days_since_referral, .after = 'hhc_sc_date_cons')
+raw_data_hhci_info_arm_1 <- raw_data_hhci_info_arm_1 %>% mutate(hhc_pc_days_to_present = difftime(as.POSIXct(as.Date(hhc_pc_presentation_date, format = '%Y-%m-%d')), as.POSIXct(as.Date(hhc_sc_date_cons, format = '%Y-%m-%d')), units = 'days')) %>% relocate(hhc_pc_days_to_present, .after = 'hhc_sc_date_cons')
+raw_data_hhci_info_arm_1 <- raw_data_hhci_info_arm_1 %>% mutate(hhc_pt_days_to_present = difftime(as.POSIXct(as.Date(hhc_pt_return_date, format = '%Y-%m-%d')), as.POSIXct(as.Date(hhc_sc_date_cons, format = '%Y-%m-%d')), units = 'days')) %>% relocate(hhc_pt_days_to_present, .after = 'hhc_pc_days_to_present')
+raw_data_hhci_info_arm_1 <- raw_data_hhci_info_arm_1 %>% mutate(hhc_pt_days_to_present = difftime(as.POSIXct(as.Date(hhc_pt_return_date, format = '%Y-%m-%d')), as.POSIXct(as.Date(hhc_sc_date_cons, format = '%Y-%m-%d')), units = 'days')) %>% relocate(hhc_pt_days_to_present, .after = 'hhc_sc_date_cons')
+
 #raw_data_baseline_arm_1 <- raw_data_baseline_arm_1 %>% 
 #  select(record_id, contains("tbip_q1_pc_q")) %>% 
 #  rowwise() %>%
