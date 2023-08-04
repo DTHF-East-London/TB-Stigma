@@ -60,7 +60,7 @@ setCellValue(cells[["25.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_base
 setCellValue(cells[["30.4"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_below_age=='Yes' | raw_data_baseline_arm_1$tbip_sc_below_age=='No')))
 setCellValue(cells[["31.4"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_below_age=='No')))
 setCellValue(cells[["32.4"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_below_age=='Yes')))
-setCellValue(cells[["33.4"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes')))
+setCellValue(cells[["33.4"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes'Dat)))
 setCellValue(cells[["34.4"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='No')))
 
 
@@ -396,6 +396,7 @@ setCellValue(cells[["79.12"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(i
 
 xlsx::forceFormulaRefresh(filename_new)
 xlsx::saveWorkbook(wb, filename_new)
+xlsx::saveWorkbook(wb, "Data\TBStigmaWeeklyReport.xlsx")
 
 print("Outcome - End")
 
