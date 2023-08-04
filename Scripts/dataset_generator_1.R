@@ -27,6 +27,8 @@ events <- as.list(events$unique_event_name)
 
 instruments <- exportMappings(rcon)
 
+today <- as.POSIXct(Sys.time())
+
 for(event in events){
   forms <- subset(instruments, instruments$unique_event_name==event)
   forms <- as.vector(forms$form)
