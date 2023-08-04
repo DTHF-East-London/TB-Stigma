@@ -100,6 +100,8 @@ names(temp_2) <- c("record_id", "hhc_members_not_visited_1")
 
 visit_attempt <- left_join(temp_1, temp_2)
 
+visit_attempt$record_id <- as.character(visit_attempt$record_id)
+
 raw_data_baseline_arm_1 <- left_join(raw_data_baseline_arm_1, visit_attempt)
 
 #Visit 2
@@ -114,6 +116,8 @@ temp_2 <- temp_2[c(1,3)]
 names(temp_2) <- c("record_id", "hhc_members_not_visited_2")
 
 visit_attempt <- left_join(temp_1, temp_2)
+
+visit_attempt$record_id <- as.character(visit_attempt$record_id)
 
 raw_data_baseline_arm_1 <- left_join(raw_data_baseline_arm_1, visit_attempt)
 
@@ -130,6 +134,8 @@ temp_2 <- temp_2[c(1,3)]
 names(temp_2) <- c("record_id", "hhc_members_not_visited_3")
 
 visit_attempt <- left_join(temp_1, temp_2)
+
+visit_attempt$record_id <- as.character(visit_attempt$record_id)
 
 raw_data_baseline_arm_1 <- left_join(raw_data_baseline_arm_1, visit_attempt)
 #raw_data_baseline_arm_1 <- raw_data_baseline_arm_1 %>% 
