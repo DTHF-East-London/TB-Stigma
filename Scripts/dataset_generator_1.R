@@ -8,7 +8,6 @@ library(summarytools)
 library(readxl)
 library(haven)
 library(xlsx)
-library(tableone)
 library(survival)
 library(conflicted)
 
