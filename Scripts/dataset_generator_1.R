@@ -44,7 +44,7 @@ for(event in events){
     if(event!="baseline_arm_1"){
       temp <- temp[-c(5:100)]
     }
-  
+   temp$record_id <- as.numeric(temp$record_id)
     assign(paste('raw_data', event, sep = '_'), temp)
   }
   
