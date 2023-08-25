@@ -343,3 +343,14 @@ get_enrollment_figures <- function(df, study, period){
   enrollment_summary <- merge_df(enrollment_freq, enrollment_cumfreq, tmp_period)
   return(enrollment_summary)
 }
+
+find_mode <- function(x) {
+  u <- unique(x)
+  tab <- tabulate(match(x, u))
+  u[tab == max(tab)]
+}
+
+getmode <- function(v) {
+  uniqv <- unique(v)
+  uniqv[which.max(tabulate(match(v, uniqv)))]
+}
