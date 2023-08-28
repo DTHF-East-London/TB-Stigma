@@ -3,3 +3,4 @@ getTBExtractionRecords <- function(dataset){
   temp <- subset(temp, !is.na(temp$hhc_pc_days_since_referral) & temp$hhc_pc_days_since_referral>30)
   return(temp)
 }
+raw_data_hhci_info_arm_1$hhc_sc_pin_calc

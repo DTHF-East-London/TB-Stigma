@@ -81,7 +81,7 @@ raw_data_hhci_info_arm_1 <- raw_data_hhci_info_arm_1 %>% mutate(hhc_pc_days_to_p
 raw_data_hhci_info_arm_1 <- raw_data_hhci_info_arm_1 %>% mutate(hhc_pt_days_to_present = difftime(as.POSIXct(as.Date(hhc_pt_return_date, format = '%Y-%m-%d')), as.POSIXct(as.Date(hhc_sc_date_cons, format = '%Y-%m-%d')), units = 'days')) %>% relocate(hhc_pt_days_to_present, .after = 'hhc_pc_days_to_present')
 raw_data_hhci_info_arm_1 <- raw_data_hhci_info_arm_1 %>% mutate(hhc_pt_days_to_present = difftime(as.POSIXct(as.Date(hhc_pt_return_date, format = '%Y-%m-%d')), as.POSIXct(as.Date(hhc_sc_date_cons, format = '%Y-%m-%d')), units = 'days')) %>% relocate(hhc_pt_days_to_present, .after = 'hhc_sc_date_cons')
 
-ip_enrollment <- raw_data_baseline_arm_1[c(1,7)]
+ip_enrollment <- raw_data_baseline_arm_1[c("record_id", "tbip_sc_date")]
 
 raw_data_hhci_info_arm_1 <- left_join(raw_data_hhci_info_arm_1, ip_enrollment) %>% relocate(tbip_sc_date, .after = record_id)
 
