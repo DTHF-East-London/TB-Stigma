@@ -7,6 +7,8 @@ library(RMySQL)
 library(summarytools)
 library(readxl)
 library(haven)
+library(redcapAPI)
+
 
 source("Scripts/functions.R")
 

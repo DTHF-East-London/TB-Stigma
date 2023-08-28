@@ -36,3 +36,4 @@ vignettes/*.pdf
 **Test
 **Copy
 .Rproj
+r_data.dta
