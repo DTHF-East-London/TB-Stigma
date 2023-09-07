@@ -32,6 +32,8 @@ today <- as.POSIXct(Sys.time())
 for(event in events){
   forms <- subset(instruments, instruments$unique_event_name==event)
   forms <- as.vector(forms$form)
+  
+  print(paste0("Event: ", event))
 
   if(event!="baseline_arm_1"){
     forms <- append(forms, "index_screening_and_consent",1)
@@ -98,9 +100,9 @@ temp_2 <- subset(visit_attempt, Var2=="Unchecked")
 temp_2 <- temp_2[c(1,3)]
 names(temp_2) <- c("record_id", "hhc_members_not_visited_1")
 
-visit_attempt <- left_join(temp_1, temp_2)
+visit_attempt <- left_join(temp_1, temp_2, by="record_id")
 
-visit_attempt$record_id <- as.numeric(visit_attempt$record_id)
+visit_attempt$record_id <- as.numeric(as.character(visit_attempt$record_id))
 
 raw_data_baseline_arm_1 <- left_join(raw_data_baseline_arm_1, visit_attempt)
 
