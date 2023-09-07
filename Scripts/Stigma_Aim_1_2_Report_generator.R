@@ -6,9 +6,9 @@ source("Scripts/dataset_generator_1.R")
 
 options(java.parameters = "- Xmx2048m")
 
-raw_data_hhci_info_arm_1$hhc_pt_return_clinic[raw_data_hhci_info_arm_1$record_id=='24'] <- NA
-raw_data_hhci_info_arm_1$hhc_pt_return_clinic[raw_data_hhci_info_arm_1$record_id=='122'] <- NA
-raw_data_hhci_info_arm_1$hhc_pt_return_clinic[raw_data_hhci_info_arm_1$record_id=='7'] <- NA
+#raw_data_hhci_info_arm_1$hhc_pt_return_clinic[raw_data_hhci_info_arm_1$record_id=='24'] <- NA
+#raw_data_hhci_info_arm_1$hhc_pt_return_clinic[raw_data_hhci_info_arm_1$record_id=='122'] <- NA
+#raw_data_hhci_info_arm_1$hhc_pt_return_clinic[raw_data_hhci_info_arm_1$record_id=='7'] <- NA
 
 raw_data_baseline_ni_arm_1 <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14)
 raw_data_baseline_ex_arm_1 <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc>=14)
@@ -543,6 +543,10 @@ setCellValue(cells[["11.3"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(hh
 #Pending HH Visits
 setCellValue(cells[["13.3"]], nrow(raw_data_baseline_arm_1 %>% dplyr::filter(hhc_members_visited_1==0) %>% distinct(record_id)))
 
+pending_hh <- raw_data_baseline_arm_1 %>% dplyr::filter(hhc_members_visited_1==0) %>% distinct(record_id)
+
+write.csv(pending_hh, "Data/pending_hh.csv", row.names = FALSE, na='')
+
 #Households with enrolled HHCs
 setCellValue(cells[["16.3"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(hhc_sc_consent_provided=='Yes') %>% distinct(record_id)))
 setCellValue(cells[["17.3"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(hhc_sc_consent_provided=='Yes') %>% distinct(record_id)))
@@ -579,6 +583,13 @@ setCellValue(cells[["39.3"]], nrow(subset(raw_data_hhci_info_arm_1,
 setCellValue(cells[["40.3"]], nrow(subset(raw_data_hhci_info_arm_1, hhc_sc_verbal_consent=='No')))
 setCellValue(cells[["41.3"]], nrow(subset(raw_data_hhci_info_arm_1, hhc_sc_language=='No')))
 setCellValue(cells[["42.3"]], nrow(subset(raw_data_hhci_info_arm_1, as.integer(hhc_sc_age_calc)<18)))
+
+tb_asymptomatic <- subset(raw_data_hhci_info_arm_1, 
+                          raw_data_hhci_info_arm_1$hhc_sc_weight_loss=='No' & 
+                            raw_data_hhci_info_arm_1$hhc_sc_night_sweat=='No' & 
+                            raw_data_hhci_info_arm_1$hhc_sc_coughing=='No' & 
+                            raw_data_hhci_info_arm_1$hhc_sc_fever=='No')
+
 
 #Eligible 
 setCellValue(cells[["43.3"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_cons_dir_3=='Proceed')))
@@ -618,7 +629,7 @@ setCellValue(cells[["77.3"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(is
 
 #Extracted Only after 30 days
 #setCellValue(cells[["55.6"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(hhc_sc_verbal_consent=='Yes' & hhc_days_since_referral>30)))
-#setCellValue(cells[["67.6"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(is.na(hhc_pc_been_facility) & hhc_days_since_referral>30 & hhc_pt_return_clinic=='No')))
+setCellValue(cells[["68.6"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(is.na(hhc_pc_been_facility) & hhc_days_since_referral>30 & hhc_pt_return_clinic=='No')))
 setCellValue(cells[["69.6"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(is.na(hhc_pc_been_facility) & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' )))
 setCellValue(cells[["70.6"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(is.na(hhc_pc_been_facility) & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' & hhc_pt_days_to_present<=30)))
 setCellValue(cells[["71.6"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(is.na(hhc_pc_been_facility) & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' & hhc_pt_days_to_present>30)))
@@ -632,7 +643,7 @@ setCellValue(cells[["77.6"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(is
 
 #Self report and Extracted Only after 30 days
 #setCellValue(cells[["55.6"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(hhc_sc_verbal_consent=='Yes' & hhc_days_since_referral>30)))
-#setCellValue(cells[["67.9"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter((hhc_pc_been_facility=='Yes, I remember the date' | hhc_pc_been_facility=='Yes, I don\'t remember the date') & hhc_days_since_referral>30 & hhc_pt_return_clinic=='No')))
+setCellValue(cells[["68.9"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(hhc_pc_been_facility=='No' & hhc_days_since_referral>30 & hhc_pt_return_clinic=='No')))
 setCellValue(cells[["69.9"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter((hhc_pc_been_facility=='Yes, I remember the date' | hhc_pc_been_facility=='Yes, I don\'t remember the date') & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' )))
 setCellValue(cells[["70.9"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter((hhc_pc_been_facility=='Yes, I remember the date' | hhc_pc_been_facility=='Yes, I don\'t remember the date') & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' & hhc_pt_days_to_present<=30)))
 setCellValue(cells[["71.9"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter((hhc_pc_been_facility=='Yes, I remember the date' | hhc_pc_been_facility=='Yes, I don\'t remember the date') & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' & hhc_pt_days_to_present>30)))
@@ -746,7 +757,7 @@ setCellValue(cells[["77.16"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filte
 
 #Extracted Only after 30 days
 #setCellValue(cells[["55.19"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filter(hhc_sc_verbal_consent=='Yes' & hhc_days_since_referral>30)))
-#setCellValue(cells[["67.19"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filter(is.na(hhc_pc_been_facility) & hhc_days_since_referral>30 & hhc_pt_return_clinic=='No')))
+setCellValue(cells[["68.19"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filter(is.na(hhc_pc_been_facility) & hhc_days_since_referral>30 & hhc_pt_return_clinic=='No')))
 setCellValue(cells[["69.19"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filter(is.na(hhc_pc_been_facility) & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' )))
 setCellValue(cells[["70.19"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filter(is.na(hhc_pc_been_facility) & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' & hhc_pt_days_to_present<=30)))
 setCellValue(cells[["71.19"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filter(is.na(hhc_pc_been_facility) & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' & hhc_pt_days_to_present>30)))
@@ -760,7 +771,7 @@ setCellValue(cells[["77.19"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filte
 
 #Self report and Extracted Only after 30 days
 #setCellValue(cells[["55.19"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filter(hhc_sc_verbal_consent=='Yes' & hhc_days_since_referral>30)))
-#setCellValue(cells[["67.23"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filter((hhc_pc_been_facility=='Yes, I remember the date' | hhc_pc_been_facility=='Yes, I don\'t remember the date') & hhc_days_since_referral>30 & hhc_pt_return_clinic=='No')))
+setCellValue(cells[["68.23"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filter((hhc_pc_been_facility=='Yes, I remember the date' | hhc_pc_been_facility=='Yes, I don\'t remember the date') & hhc_days_since_referral>30 & hhc_pt_return_clinic=='No')))
 setCellValue(cells[["69.23"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filter((hhc_pc_been_facility=='Yes, I remember the date' | hhc_pc_been_facility=='Yes, I don\'t remember the date') & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' )))
 setCellValue(cells[["70.23"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filter((hhc_pc_been_facility=='Yes, I remember the date' | hhc_pc_been_facility=='Yes, I don\'t remember the date') & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' & hhc_pt_days_to_present<=30)))
 setCellValue(cells[["71.23"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filter((hhc_pc_been_facility=='Yes, I remember the date' | hhc_pc_been_facility=='Yes, I don\'t remember the date') & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' & hhc_pt_days_to_present>30)))
@@ -874,7 +885,7 @@ setCellValue(cells[["77.29"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filte
 
 #Extracted Only after 30 days
 #setCellValue(cells[["55.32"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filter(hhc_sc_verbal_consent=='Yes' & hhc_days_since_referral>30)))
-#setCellValue(cells[["67.32"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filter(is.na(hhc_pc_been_facility) & hhc_days_since_referral>30 & hhc_pt_return_clinic=='No')))
+setCellValue(cells[["68.32"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filter(is.na(hhc_pc_been_facility) & hhc_days_since_referral>30 & hhc_pt_return_clinic=='No')))
 setCellValue(cells[["69.32"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filter(is.na(hhc_pc_been_facility) & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' )))
 setCellValue(cells[["70.32"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filter(is.na(hhc_pc_been_facility) & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' & hhc_pt_days_to_present<=30)))
 setCellValue(cells[["71.32"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filter(is.na(hhc_pc_been_facility) & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' & hhc_pt_days_to_present>30)))
@@ -888,7 +899,7 @@ setCellValue(cells[["77.32"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filte
 
 #Self report and Extracted Only after 30 days
 #setCellValue(cells[["55.32"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filter(hhc_sc_verbal_consent=='Yes' & hhc_days_since_referral>30)))
-#setCellValue(cells[["67.35"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filter((hhc_pc_been_facility=='Yes, I remember the date' | hhc_pc_been_facility=='Yes, I don\'t remember the date') & hhc_days_since_referral>30 & hhc_pt_return_clinic=='No')))
+setCellValue(cells[["68.35"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filter((hhc_pc_been_facility=='Yes, I remember the date' | hhc_pc_been_facility=='Yes, I don\'t remember the date') & hhc_days_since_referral>30 & hhc_pt_return_clinic=='No')))
 setCellValue(cells[["69.35"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filter((hhc_pc_been_facility=='Yes, I remember the date' | hhc_pc_been_facility=='Yes, I don\'t remember the date') & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' )))
 setCellValue(cells[["70.35"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filter((hhc_pc_been_facility=='Yes, I remember the date' | hhc_pc_been_facility=='Yes, I don\'t remember the date') & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' & hhc_pt_days_to_present<=30)))
 setCellValue(cells[["71.35"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filter((hhc_pc_been_facility=='Yes, I remember the date' | hhc_pc_been_facility=='Yes, I don\'t remember the date') & hhc_days_since_referral>30 & hhc_pt_return_clinic=='Yes' & hhc_pt_days_to_present>30)))
