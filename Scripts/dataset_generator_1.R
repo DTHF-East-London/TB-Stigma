@@ -36,7 +36,7 @@ for(event in events){
   print(paste0("Event: ", event))
 
   if(event!="baseline_arm_1"){
-    forms <- append(forms, "index_screening_and_consent",1)
+    forms <- append(forms, "index_screening_and_consent",0)
   }
   
   if(event!="follow_up_1_arm_1" & event!="follow_up_2_arm_1"){
@@ -47,6 +47,28 @@ for(event in events){
       temp <- temp[-c(5:100)]
     }
    temp$record_id <- as.numeric(temp$record_id)
+    assign(paste('raw_data', event, sep = '_'), temp)
+  }
+  
+  if(event!="follow_up_1_arm_1"){
+    
+    temp <- getREDCapRecords(event, forms, NULL, TRUE)
+    
+    if(event!="baseline_arm_1"){
+      temp <- temp[-c(5:100)]
+    }
+    temp$record_id <- as.numeric(temp$record_id)
+    assign(paste('raw_data', event, sep = '_'), temp)
+  }
+  
+  if(event!="follow_up_2_arm_1"){
+    
+    temp <- getREDCapRecords(event, forms, NULL, TRUE)
+    
+    if(event!="baseline_arm_1"){
+      temp <- temp[-c(5:100)]
+    }
+    temp$record_id <- as.numeric(temp$record_id)
     assign(paste('raw_data', event, sep = '_'), temp)
   }
   
