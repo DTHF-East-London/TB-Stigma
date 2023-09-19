@@ -1,4 +1,6 @@
 library(furniture)
+library(dplyr)
+library(ggplot2)
 
 temp1 <- raw_data_baseline_arm_1[c("record_id", "tbip_sc_date", "tbip_sc_q5", "tbip_sc_consent_part", "tbip_sc_cgiver_permission", "tbip_sc_date_visit_hh1")]
 temp2 <- raw_data_hhci_visit_info_arm_1[c("record_id", "hhc_sch_hhi_date_visit")]
@@ -16,7 +18,7 @@ temp <- temp %>% mutate(days_attempt_2 = difftime(hhc_sc_attempt_2_date, tbip_sc
 temp <- temp %>% mutate(days_attempt_3 = difftime(hhc_sc_attempt_3_date, tbip_sc_date, units = "days")) %>% relocate(days_attempt_3, .after = hhc_sc_attempt_3_date)
 
 #Visit adherence
-temp <- temp %>% mutate(visit_adherence_1 = case_when(difftime(tbip_sc_date_visit_hh1, hhc_sc_attempt_1_date, units = "days")==0 ~ "Yes",
+temp <- temp %>% mutate(visit_adherence_1 = case_when(difftime(scheduled_visit_date, hhc_sc_attempt_1_date, units = "days")==0 ~ "Yes",
                                                  .default = "No")) %>% relocate(visit_adherence_1, .after = hhc_sc_attempt_1_date)
 
 temp <- temp %>% mutate(visit_adherence_2 = case_when(difftime(hhc_sc_attempt_1_rec_date, hhc_sc_attempt_2_date, units = "days")==0 ~ "Yes",
