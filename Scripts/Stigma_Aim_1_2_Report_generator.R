@@ -429,10 +429,12 @@ setCellValue(cells[["25.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_base
 setCellValue(cells[["31.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14 & raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed')))
 setCellValue(cells[["31.4"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14 & raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes')))
 setCellValue(cells[["31.6"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14 & raw_data_baseline_arm_1$index_questionnaire_3_complete=='Complete')))
-setCellValue(cells[["31.7"]], nrow(subset(raw_data_follow_up_1_arm_1, raw_data_follow_up_1_arm_1$tbr_smear_res_1=='Negative')))
-setCellValue(cells[["31.8"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_pt_return_clinic=='Yes')))
-setCellValue(cells[["31.9"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$tbr_smear_1=='Yes')))
-setCellValue(cells[["31.10"]], nrow(subset(raw_data_follow_up_1_arm_1, raw_data_follow_up_1_arm_1$index_follow_up_questionnaire_3_complete=='Unverified' | raw_data_follow_up_1_arm_1$index_follow_up_questionnaire_3_complete=="Complete")))
+setCellValue(cells[["31.7"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbr_smear_res_1=='Negative')))
+setCellValue(cells[["31.8"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbr_smear_res_1=='Postive 1+' | raw_data_hhci_info_arm_1$tbr_smear_res_1=='Postive 2+' | raw_data_hhci_info_arm_1$tbr_smear_res_1=='Postive 3+')))
+setCellValue(cells[["31.9"]], nrow(subset(raw_data_follow_up_1_arm_1, raw_data_follow_up_1_arm_1$tbr_sputum_collected=='Yes')))
+setCellValue(cells[["31.10"]], nrow(subset(raw_data_follow_up_1_arm_1, raw_data_follow_up_1_arm_1$tbr_smear_res_1=='Negative')))
+setCellValue(cells[["31.11"]], nrow(subset(raw_data_follow_up_1_arm_1, raw_data_follow_up_1_arm_1$tbr_smear_res_1=='Negative')))
+setCellValue(cells[["31.12"]], nrow(subset(raw_data_follow_up_1_arm_1, raw_data_follow_up_1_arm_1$index_follow_up_questionnaire_3_complete=='Unverified' | raw_data_follow_up_1_arm_1$index_follow_up_questionnaire_3_complete=="Complete")))
 
 
 
