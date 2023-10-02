@@ -80,6 +80,12 @@ raw_data_baseline_arm_1 <- subset(raw_data_baseline_arm_1, record_id!='53')
 raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, record_id!='53')
 raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, record_id!='53')
 
+#Drop record 386
+
+raw_data_baseline_arm_1 <- subset(raw_data_baseline_arm_1, record_id!='386')
+raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, record_id!='386')
+raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, record_id!='386')
+
 #Adding additional calculated variables
 #raw_data_hhci_info_arm_1$hhc_
 
