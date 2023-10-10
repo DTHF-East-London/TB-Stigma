@@ -86,6 +86,11 @@ raw_data_baseline_arm_1 <- subset(raw_data_baseline_arm_1, record_id!='386')
 raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, record_id!='386')
 raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, record_id!='386')
 
+#Drop record 286
+raw_data_baseline_arm_1 <- subset(raw_data_baseline_arm_1, record_id!='286')
+raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, record_id!='286')
+raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, record_id!='286')
+
 #Adding additional calculated variables
 raw_data_baseline_arm_1 <- raw_data_baseline_arm_1%>% mutate(tbip_sc_days_since_init = difftime(today, as.POSIXct(as.Date(tbip_sc_ini_date, format = '%Y-%m-%d')), units = 'days')) %>% relocate(tbip_sc_days_since_init, .after = 'tbip_sc_ini_days_calc')
 
