@@ -17,6 +17,7 @@ print("getting REDCap connection")
 rcon <- getREDCapConnection(1)
 path <- "./Data/"
 output_file <- paste0('dataset',format(Sys.time(), '%d_%B_%Y'),'.xlsx')
+today <- as.POSIXct(Sys.time())
 
 form <- c("study_notes")
 
@@ -56,7 +57,7 @@ forms <- c('labelling_hh_on_google_maps', 'screening_and_consenting')
 
 dataset_sc <- getREDCapRecords(NULL, forms, NULL)
 
-dataset_sc <- dataset_sc[c(1:3,13:57)]
+dataset_sc <- dataset_sc[c(1:3,13:60)]
 
 dataset_sc <- subset(dataset_sc, !is.na(dataset_sc$redcap_repeat_instrument))
 
