@@ -169,3 +169,4 @@ household_sympt_by_clinic <- as.data.frame(table(temp$hhc_sc_consent_provided, t
 household_sympt_by_clinic <- subset(household_sympt_by_clinic, household_sympt_by_clinic$hhc_sc_consent_provided=="Yes")
 
 household_sympt_b
+
