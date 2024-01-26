@@ -542,7 +542,7 @@ setCellValue(cells[["6.3"]], nrow(raw_data_hhci_info_arm_1 %>% distinct(record_i
 
 #Total households visited
 
-setCellValue(cells[["8.3"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(hhc_sc_visit_attempt___1=='Checked' | hhc_sc_visit_attempt___2=='Checked' | hhc_sc_visit_attempt___3=='Checked') %>% distinct(record_id)))
+setCellValue(cells[["8.3"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(hhc_sc_visit_attempt___1=='Checked' | hhc_sc_visit_attempt___2=='Checked' | hhc_sc_visit_attempt___3=='Checked'| tb_tf_study_time_point_hhc=='1') %>% distinct(record_id)))
 setCellValue(cells[["9.3"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(hhc_sc_visit_attempt___1=='Checked') %>% distinct(record_id)))
 setCellValue(cells[["10.3"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(hhc_sc_visit_attempt___2=='Checked') %>% distinct(record_id)))
 setCellValue(cells[["11.3"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(hhc_sc_visit_attempt___3=='Checked') %>% distinct(record_id)))
