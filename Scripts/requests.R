@@ -83,6 +83,13 @@ results_gxp <- results_gxp[c('record_id', 'tbip_image_5', 'tbr_genex_result_1')]
 
 
 
+
+
+
+
+
+
+
 #datasets
 write.table(raw_data_baseline_arm_1, "Data/Baseline.csv", sep = ",", row.names = FALSE)
 
@@ -95,6 +102,8 @@ write.table(raw_data_follow_up_1_arm_1, "Data/Follow-up.csv", sep = ",", row.nam
 write.table(raw_data_hhci_info_arm_1, "Data/hhci_info.csv", sep = ",", row.names = FALSE)
 
 write.table(raw_data_hhci_visit_info_arm_1, "Data/HHCI visit info.csv", sep = ",", row.names = FALSE)
+
+write.table(raw_data_follow_up_2_arm_1, "Data/follow_up_2.csv", sep = ",", row.names = FALSE)
 
 
 #follow Up ques
@@ -181,7 +190,7 @@ follow_up_eligible_2 <- follow_up_eligible_2 %>%relocate(week_7, .after = tbr_sm
 
 follow_up_eligible_2 <- follow_up_eligible_2[c('record_id', 'tbip_sc_ini_date', 'tbip_sc_q5', 'tbr_smear_res_1', 'week_7')]
 
-write.table(follow_up_eligible_2, "Data/follow up eligible.csv", sep = ",", row.names = FALSE)
+write.table(follow_up_eligible_2, "Data/follow up 2 eligible.csv", sep = ",", row.names = FALSE)
 
 
 #eligible
@@ -402,4 +411,5 @@ tb_adherence <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$treat_ou
 tb_adherence <- tb_adherence[c('record_id', 'tbip_sc_ini_days_calc', 'treat_out_intro', 'treat_out_ex_visit_1', 'treat_out_ac_visit_1', 'treat_out_visit_1_calc', 'treat_out_proc_2', 'treat_out_ex_visit_2', 'treat_out_ac_visit_2', 'treat_out_visit_1_calc_2', 'treat_out_descr_2', 'treat_out_proc_3', 'treat_out_ex_visit_3')]
 
 
-#########################
+####################################
+

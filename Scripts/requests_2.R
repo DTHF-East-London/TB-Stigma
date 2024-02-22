@@ -145,3 +145,14 @@ only_gxp <- subset(follow_up_data, follow_up_data$tbip_sc_ini_days_calc < 14 & !
 
 only_gxp <- only_gxp[c('record_id', 'tbr_genex_result_1.x', 'tbr_smear_res_1.y')]
 
+
+
+
+#############################################################
+df1 <- follow_up_data
+
+df2 <- raw_data_follow_up_2_arm_1[c('record_id', 'tbr_exp_sputum_collection_date', 'tbr_sputum_collected', 'index_follow_up_questionnaire_3_complete')]
+
+follow_up_2_data <- left_join(df1, df2, by='record_id')
+
+write.table(follow_up_2_data, "Data/follow up 2 data.csv", sep = ",", row.names = FALSE)
