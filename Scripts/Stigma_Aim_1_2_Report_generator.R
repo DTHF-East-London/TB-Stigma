@@ -536,7 +536,7 @@ cells <- getCells(rows)
 
 #Households listed by IPs
 
-setCellValue(cells[["6.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes')))
+setCellValue(cells[["6.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' | raw_data_baseline_arm_1$tbip_sc_cgiver_permission=='Yes')))
 #setCellValue(cells[["6.3"]], nrow(raw_data_hhci_info_arm_1 %>% distinct(record_id)))
 #setCellValue(cells[["7.3"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(hhc_collection_point=='Clinic') %>% distinct(record_id)))
 #setCellValue(cells[["8.3"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(hhc_collection_point=='HH') %>% distinct(record_id)))
@@ -554,6 +554,15 @@ setCellValue(cells[["13.3"]], nrow(raw_data_baseline_arm_1 %>% dplyr::filter(hhc
 pending_hh <- raw_data_baseline_arm_1 %>% dplyr::filter(hhc_members_visited_1==0) %>% distinct(record_id)
 
 write.csv(pending_hh, "Data/pending_hh.csv", row.names = FALSE, na='')
+
+
+setCellValue(cells[["14.7"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$record_id < 1105 & (raw_data_hhci_info_arm_1$hhc_sc_consent_provided=='Yes'))))
+
+setCellValue(cells[["15.7"]], nrow(raw_data_hhci_info_arm_1 %>%
+                                     dplyr::filter(hhc_sc_consent_provided == 'Yes') %>%
+                                     dplyr::filter(record_id < 1105) %>%
+                                     dplyr::distinct(record_id)))
+
 
 #Households with enrolled HHCs
 setCellValue(cells[["16.3"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(hhc_sc_consent_provided=='Yes') %>% distinct(record_id)))
@@ -676,7 +685,7 @@ setCellValue(cells[["79.12"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(i
 
 #Households listed by IPs
 
-setCellValue(cells[["6.16"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & (raw_data_baseline_arm_1$tbip_sc_ini_days_calc < 14))))
+setCellValue(cells[["6.16"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' | raw_data_baseline_arm_1$tbip_sc_cgiver_permission == 'Yes' & (raw_data_baseline_arm_1$tbip_sc_ini_days_calc < 14))))
 #setCellValue(cells[["7.16"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filter(hhc_collection_point=='Clinic') %>% distinct(record_id)))
 #setCellValue(cells[["8.16"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filter(hhc_collection_point=='HH') %>% distinct(record_id)))
 
@@ -797,7 +806,7 @@ setCellValue(cells[["79.25"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filte
 
 ################################################################################
 #                                                                              #
-#                             TB Experienced Participants                     #
+#                             TB Experienced Participants                      #
 #                                                                              #
 ################################################################################
 
@@ -805,7 +814,7 @@ setCellValue(cells[["79.25"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filte
 
 #Households listed by IPs
 
-setCellValue(cells[["6.29"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & (raw_data_baseline_arm_1$tbip_sc_ini_days_calc >= 14))))
+setCellValue(cells[["6.29"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_cgiver_permission == 'Yes' & (raw_data_baseline_arm_1$tbip_sc_ini_days_calc >= 14))))
 #setCellValue(cells[["7.29"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filter(hhc_collection_point=='Clinic') %>% distinct(record_id)))
 #setCellValue(cells[["8.29"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filter(hhc_collection_point=='HH') %>% distinct(record_id)))
 

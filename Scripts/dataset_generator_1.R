@@ -110,6 +110,48 @@ raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, record_
 raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, record_id!='1007')
 
 
+#Missing Records
+raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, record_id!='1027')
+raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, record_id!='1027')
+
+raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, record_id!='1046')
+raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, record_id!='1046')
+
+raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, record_id!='1024')
+raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, record_id!='1024')
+
+raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, record_id!='1030')
+raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, record_id!='1030')
+
+raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, record_id!='1058')
+raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, record_id!='1058')
+
+raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, record_id!='1039')
+raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, record_id!='1039')
+
+raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, record_id!='1040')
+raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, record_id!='1040')
+
+raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, record_id!='1067')
+raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, record_id!='1067')
+
+raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, record_id!='1028')
+raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, record_id!='1028')
+
+raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, record_id!='1038')
+raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, record_id!='1038')
+
+raw_data_hhci_visit_info_arm_1 <- subset(raw_data_hhci_visit_info_arm_1, record_id!='1081')
+raw_data_hhci_info_arm_1 <- subset(raw_data_hhci_info_arm_1, record_id!='1081')
+
+
+
+
+
+
+
+
+
 #Drop records that went missing on REDCap
 
 

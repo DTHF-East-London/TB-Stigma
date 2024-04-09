@@ -85,11 +85,6 @@ results_gxp <- results_gxp[c('record_id', 'tbip_image_5', 'tbr_genex_result_1')]
 
 
 
-
-
-
-
-
 #datasets
 write.table(raw_data_baseline_arm_1, "Data/Baseline.csv", sep = ",", row.names = FALSE)
 
@@ -411,5 +406,30 @@ tb_adherence <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$treat_ou
 tb_adherence <- tb_adherence[c('record_id', 'tbip_sc_ini_days_calc', 'treat_out_intro', 'treat_out_ex_visit_1', 'treat_out_ac_visit_1', 'treat_out_visit_1_calc', 'treat_out_proc_2', 'treat_out_ex_visit_2', 'treat_out_ac_visit_2', 'treat_out_visit_1_calc_2', 'treat_out_descr_2', 'treat_out_proc_3', 'treat_out_ex_visit_3')]
 
 
-####################################
+####################################HoH refused Household visit
+ref_hh_visit <- subset(raw_data_hhci_visit_info_arm_1, raw_data_hhci_visit_info_arm_1$hhc_sch_confirm_visit_2=='No')
 
+ref_hh_visit <- ref_hh_visit[c('record_id', 'hhc_sch_confirm_visit_2')]
+
+
+write.table(dataset_hhd, "Data/HH Survey.csv", sep = ",", row.names = FALSE)
+
+write.table(dataset_master, "Data/HH Survey Master.csv", sep = ",", row.names = FALSE)
+
+
+
+#
+out_com <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_q17=='No')
+
+out_com <- out_com[c('record_id', 'tbip_sc_date', 'tbip_sc_q5', 'tbip_sc_ini_date', 'tbip_sc_q17')]
+
+write.table(out_com, "Data/outside community.csv", sep = ",", row.names = FALSE)
+
+
+#
+no_adherence <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' &
+                         (is.na(raw_data_baseline_arm_1$treat_out_intro)))
+
+no_adherence <- no_adherence[c('record_id',  'tbip_sc_q5', 'tbip_sc_consent_part','treat_out_intro')]
+
+write.table(no_adherence, "Data/no adherence.csv", sep = ",", row.names = FALSE)
