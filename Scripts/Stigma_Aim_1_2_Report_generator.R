@@ -50,7 +50,7 @@ filename_new <- paste("Data/TB_Stigma_Aim_1_2", today, ".xlsx")
 
 #Screening
 setCellValue(cells[["4.3"]], nrow(raw_data_baseline_arm_1))
-setCellValue(cells[["5.3"]], nrow(subset(raw_data_baseline_arm_1, !is.na(raw_data_baseline_arm_1$sc_aim))))
+#setCellValue(cells[["5.3"]], nrow(subset(raw_data_baseline_arm_1, !is.na(raw_data_baseline_arm_1$sc_aim))))
 setCellValue(cells[["6.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed')))
 setCellValue(cells[["7.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_end_ip=='End' | raw_data_baseline_arm_1$tbip_sc_age <18)))
 setCellValue(cells[["8.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_below_age=='Yes' | raw_data_baseline_arm_1$tbip_sc_below_age=='No')))
@@ -59,7 +59,8 @@ setCellValue(cells[["10.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_base
 setCellValue(cells[["11.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_language=='No')))
 setCellValue(cells[["12.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_q13=='No')))
 setCellValue(cells[["13.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_existing=='Yes')))
-
+setCellValue(cells[["15.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc > 13 &
+                                            (raw_data_baseline_arm_1$tbip_sc_q13=='No') & (raw_data_baseline_arm_1$record_id > 1883))))
 
 #Enrolment
 setCellValue(cells[["18.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed')))
