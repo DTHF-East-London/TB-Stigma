@@ -11,9 +11,7 @@ library(xlsx)
 library(survival)
 library(conflicted)
 
-
 source("Scripts/functions.R")
-
 
 #Get REDCap connection
 print("getting REDCap connection")

@@ -95,18 +95,7 @@ write.table(no_gxp,"Data/no gxp.csv", sep = ",", row.names = FALSE)
 
 
 
-#Follow Up Dataset
-data_1 <- raw_data_baseline_arm_1[c('record_id', 'tbip_sc_date', 'tbip_sc_ini_date','tbip_sc_ini_days_calc','tbip_sc_q5', 'tbip_sc_consent_part', 'tbr_fu_present', 'tbr_smear_1', 'tbr_smear_res_1', 'tbr_smear_2', 'tbr_smear_res_2', 'tbr_genex_1', 'tbr_genex_result_1', 'tbr_genex_2', 'tbr_gx_done_res_2', 'treat_out_outcome')]
 
-#data_1$days_since_initiation <- difftime(tbip_sc_ini_date, Sys.Date(), units = "days")
-
-#data_1 <- relocate(data_1, days_since_initiation, .after = tbip_sc_ini_days_calc)
-
-data_2 <- raw_data_follow_up_1_arm_1[c('record_id', 'tbr_sputum_collected', 'tbr_fu_present', 'tbr_smear_1', 'tbr_smear_res_1', 'tbr_smear_2', 'tbr_smear_res_2', 'tbr_genex_1', 'tbr_genex_result_1', 'tbr_genex_2', 'tbr_gx_done_res_2', 'index_follow_up_questionnaire_1_complete', 'index_follow_up_questionnaire_2_complete', 'index_follow_up_questionnaire_3_complete')]
-
-follow_up_data <- left_join(data_1, data_2, by='record_id')
-
-write.table(follow_up_data, "Data/follow up data.csv", sep = ",", row.names = FALSE)
 
 
 ####################################
@@ -115,6 +104,7 @@ converted <- subset(follow_up_data, !is.na(follow_up_data$tbr_fu_present.x) | !i
 converted <- converted[c('record_id', 'tbr_fu_present.x', 'tbr_fu_present.y')]
 
 write.table(converted, "Data/Converted.csv", sep = ",", row.names = FALSE)
+
 
 
 
@@ -149,19 +139,15 @@ only_gxp <- only_gxp[c('record_id', 'tbr_genex_result_1.x', 'tbr_smear_res_1.y')
 
 
 #############################################################
-df1 <- follow_up_data
-
-df2 <- raw_data_follow_up_2_arm_1[c('record_id', 'tbr_exp_sputum_collection_date', 'tbr_sputum_collected', 'index_follow_up_questionnaire_3_complete')]
-
-follow_up_2_data <- left_join(df1, df2, by='record_id')
-
-write.table(follow_up_2_data, "Data/follow up 2 data.csv", sep = ",", row.names = FALSE)
 
 
 
 #####################################################
 refused <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_consent_provided=='No' |
                     raw_data_hhci_info_arm_1$hhc_sc_competent=='No')
+
+
+
 
 refused <- refused [c('record_id', 'hhc_sc_consent_provided', 'hhc_sc_competent')]
 
@@ -263,3 +249,188 @@ df_hhs_hhd <- dataset_hhd
 hhc_l_data <- left_join(df_hhs_mas, df_hhs_hhd, by='record_id')
 
 write.table(hhc_l_data, "Data/HH Data.csv", sep = ",", row.names = FALSE)
+
+
+###############GXP NE
+gxp_ne <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc < 14 & 
+                   (!is.na(raw_data_baseline_arm_1$tbr_genex_result_1) &
+                      (is.na(raw_data_baseline_arm_1$tbr_smear_res_1))))
+
+gxp_ne <- gxp_ne[c('record_id', 'tbip_sc_ini_days_calc', 'tbr_genex_result_1', 'tbr_smear_res_1')]
+
+
+########Smear NE
+smear_ne <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc < 14 & 
+                     (!is.na(raw_data_baseline_arm_1$tbr_smear_res_1) & 
+                        (is.na(raw_data_baseline_arm_1$tbr_genex_result_1))))
+
+smear_ne <- smear_ne[c('record_id', 'tbip_sc_ini_days_calc', 'tbr_smear_res_1', 'tbr_genex_result_1')]
+
+
+#########smear and gxp
+smear_gxp <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_date < 14 & 
+                      (!is.na(raw_data_baseline_arm_1$tbr_smear_res_1) &
+                         (!is.na(raw_data_baseline_arm_1$tbr_genex_result_1))))
+
+smear_gxp <- smear_gxp[c('record_id', 'tbip_sc_ini_date', 'tbr_smear_res_1', 'tbr_genex_result_1')]
+
+
+##
+lpa <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc < 14 &
+                (!is.na(raw_data_baseline_arm_1$tbr_lpa_done_res_1) &
+                   (is.na(raw_data_baseline_arm_1$tbr_smear_res_1) & (is.na(raw_data_baseline_arm_1$tbr_genex_result_1)))))
+
+lpa <- lpa[c('record_id', 'tbr_lpa_done_res_1', 'tbr_smear_res_1', 'tbr_genex_result_1')]
+
+
+
+##########Enrolled no extraction
+enrol_no_ex <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_consent_provided=='Yes' &
+                        (raw_data_hhci_info_arm_1$hhc_pc_days_since_referral > 30))
+
+enrol_no_ex<- enrol_no_ex[c('record_id', 'hhc_sc_consent_provided', 'hhc_pc_days_since_referral', 'hhc_pc_intro', 'hhc_pc_attempt_outcome_1', 'hhc_pc_attempt_outcome_2', 'hhc_pc_attempt_outcome_3', 'hhc_pc_attempt_outcome_4', 'hhc_pc_attempt_outcome_5', 'hhc_pc_been_facility', 'hhc_pt_intro')]
+
+write.table(enrol_no_ex, "Data/extraction data.csv", sep = ",", row.names = FALSE)
+
+
+#
+no_fu2_data <- subset(raw_data_follow_up_2_arm_1, (is.na(raw_data_follow_up_2_arm_1$tbr_exp_sputum_collection_date) |
+                                                     is.na(raw_data_follow_up_2_arm_1$tbr_sputum_collected) |
+                                                     is.na(raw_data_follow_up_2_arm_1$tbr_act_sputum_collection_date)|
+                                                     is.na(raw_data_follow_up_2_arm_1$tbr_results_available)))
+
+no_fu2_data <- no_fu2_data[c('record_id', 'tbr_exp_sputum_collection_date', 'tbr_sputum_collected', 'tbr_act_sputum_collection_date', 'tbr_results_available')]
+
+
+v <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_clinic_visit=='Yes')
+
+
+#Presented No clinic extraction
+no_extraction <- subset(raw_data_hhci_info_arm_1, !is.na(raw_data_hhci_info_arm_1$hhc_pc_present_referral))
+
+no_extraction <- no_extraction[c('record_id', 'redcap_repeat_instance', 'hhc_pc_facility', 'hhc_pc_present_referral', 'hhc_pt_intro', 'hhc_pt_return_clinic')]
+
+write.table(no_extraction, "Data/No extraction.csv", sep = ",", row.names = FALSE)
+
+
+##########
+hhc_not_visited <- subset(raw_data_hhci_info_arm_1, is.na(raw_data_hhci_info_arm_1$hhc_sc_intro) &
+                            (is.na(raw_data_hhci_info_arm_1$hhc_sn_needed)))
+
+hhc_not_visited <- hhc_not_visited[c('record_id', 'hhc_sc_intro', 'hhc_sn_needed')]
+
+write.table(hhc_not_visited, "Data/hhc_not_visited.csv", sep = ",", row.names = FALSE)
+
+
+##################################################################################################
+aaron_request <- full_dataset_master[c('record_id', 'ra_instruct', 'house_number', 'attempt', 'ra_instruct_1stattempt', 'google_map_pic', 'ra_instruct_2nd_3rdattempt',
+                                       'ins_13', 'labelling_hh_on_google_maps_complete', 'area', 'study_community', 'square_number', 'sub_square_letter', 'confirm_infrontofgate_door', 'instruct_gps', 'gps_coordinates', 'gps_coordinates_2', 'hhmember_present', 'intro_script1', 'hh_not_present_confirm', 
+                                       'hoh_at_home', 'intro_script_2', 'interest_status', 'thanks', 'screening_for_eligibility', 'name', 'surname', 'how_old_are_you', 'dob', 'calculated_age', 'participant_gender', 'lang_fluent', 'community', 'ra_the_participant_is_elig', 'ra_the_person_is_not_eligi', 'note_to_ra_you_will_now_st', 'preferred_language_to_be_u',
+                                       'icf_e', 'did_the_person_consent_to', 'participant_can_sign', 'i_name_surname_hereby_prov', 'signature_x', 'witness', 'witness_name', 'i_name_surname_hereby_prov_2', 'signature_x_2', 'consent_date', 'pin_setup1', 'pin_setup2', 'pin_setup3', 'pin_setup4', 'pin_setup5', 'refconfirm', 'consented_the_person_has_a', 'pin',
+                                       'pin_display', 'consent_qc_1', 'consent_qc_2', 'consent_qc_3', 'contact_no', 'contact_no_2', 'contact_owner_other', 'timestamp_end_of_consent', 'screen_save', 'save_instruct_2', 'screening_and_consenting_complete', 'oversampled', 'questionnaires_complete')]
+
+
+
+aaron_request <- full_dataset_master[-c(100)]
+
+
+#####################################################################################################
+sec_attempt <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_attempt_1_present=='No' &
+                        (is.na(raw_data_hhci_info_arm_1$hhc_sc_attempt_2_date)))
+
+
+sec_attempt <- sec_attempt[c('record_id', 'redcap_repeat_instance','hhc_sc_attempt_1_present', 'hhc_sc_attempt_2_date')]
+
+
+third_attempt <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_attempt_2_present=='No' &
+                          (is.na(raw_data_hhci_info_arm_1$hhc_sc_attempt_3_date)))
+
+
+third_attempt <- third_attempt[c('record_id', 'redcap_repeat_instance','hhc_sc_attempt_2_present', 'hhc_sc_attempt_3_date')]
+
+
+
+write.table(sec_attempt, "Data/no second attempt.csv", sep = ",", row.names = FALSE)
+
+write.table(third_attempt, "Data/no third attempt.csv", sep = ",", row.names = FALSE)
+
+
+
+
+###############################################################################################################
+hhc_enroled <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_consent_provided=='Yes')
+
+
+no_clinic_enrol <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes')
+
+no_clinic_enrol <- no_clinic_enrol[c('record_id', 'tbip_sc_q5')]
+
+unique(no_clinic_enrol$tbip_sc_q5)
+
+
+
+##############################################################
+baseline <- raw_data_baseline_arm_1[c('record_id', 'tbip_sc_q5', 'tbip_sc_ini_days_calc', 'tbip_sc_q14', 'tbip_sc_consent_part')]
+
+sc <- raw_data_hhci_visit_info_arm_1[c('record_id', 'hhc_css_area','hhc_css_study_community')]
+
+study_community <- left_join(baseline, sc, by='record_id')
+
+write.table(study_community, "Data/study community.csv", sep = ",", row.names = FALSE)
+
+
+
+# PRESENTED HHC
+presented_hhc <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_consent_provided=='Yes' &
+                          (raw_data_hhci_info_arm_1$hhc_pc_been_facility=='Yes, I remember the date' | raw_data_hhci_info_arm_1$hhc_pc_been_facility=="Yes, I don't remember the date" | 
+                             raw_data_hhci_info_arm_1$hhc_pt_return_clinic=='Yes'))
+
+presented_hhc <- presented_hhc[c('record_id', 'redcap_repeat_instance', 'hhc_pc_been_facility', 'hhc_pc_been_facility', 'hhc_pt_return_clinic')]
+
+write.table(presented_hhc, "Data/presented hhc.csv", sep = ",", row.names = FALSE)
+
+
+
+# NOT PRESENTED HHC
+not_presented <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_consent_provided=='Yes' &
+                          (raw_data_hhci_info_arm_1$hhc_pc_been_facility=='No') & (raw_data_hhci_info_arm_1$hhc_pt_return_clinic=='No'))
+
+not_presented <- not_presented[c('record_id', 'redcap_repeat_instance', 'hhc_pc_been_facility', 'hhc_pt_return_clinic')]
+
+write.table(not_presented, "Data/not present hhc.csv", sep = ",", row.names = FALSE)
+
+
+#############################################################################################################
+less_than_30 <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_consent_provided=='Yes')
+
+less_than_30 <- less_than_30[c('record_id', 'redcap_repeat_instance', 'hhc_sc_consent_provided', 'hhc_sc_date_cons', 'hhc_pc_presentation_date', 'hhc_pt_return_date')]
+
+write.table(less_than_30, "Data/less_than_30.csv", sep = ",", row.names = FALSE)
+
+
+##############################################################################################################
+hhc_hiv <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_consent_provided=='Yes')
+
+hhc_hiv <- hhc_hiv[c('record_id', 'hhc_sc_consent_provided','hhc_q1_hiv_th_q1', 'hhc_q1_hiv_status')]
+
+write.table(hhc_hiv, "Data/hhc hiv.csv", sep = ",", row.names = FALSE)
+
+
+
+###########################################################################################################################
+adherence <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' &
+                      (raw_data_baseline_arm_1$tbip_sc_ini_days_calc < 14))
+
+adherence <- adherence[c('record_id', 'treat_out_visit_1_calc', 'treat_out_visit_1_calc_2', 'treat_out_visit_1_calc_3', 'treat_out_visit_1_calc_4', 'treat_out_visit_1_calc_5', 'treat_out_visit_1_calc_6', 'treat_out_visit_1_calc_7', 'treat_out_visit_1_calc_8', 'treat_out_visit_1_calc_9', 'treat_out_visit_1_calc_10', 'treat_out_visit_1_calc_11')]
+
+result <- apply(adherence,2, function(x) x[x > 30])
+
+
+
+#################################################################################################################################
+no_ques <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & (raw_data_baseline_arm_1$index_questionnaire_3_complete=='Unverified' |
+                    raw_data_baseline_arm_1$index_questionnaire_3_complete=='Incomplete'))
+
+no_ques <- no_ques[c('record_id', 'tbip_sc_consent_part', 'index_questionnaire_3_complete', 'sn_add_notes')]
+
+write.table(no_ques, "Data/incomplete questionnaires.csv", sep = ",", row.names = FALSE)

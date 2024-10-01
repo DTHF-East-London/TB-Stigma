@@ -388,7 +388,7 @@ sec_attempt <- subset(temp, temp$visit_adherence_2=='Yes')
 sec_attempt <- sec_attempt[c('record_id', 'visit_adherence_2')]
 
 
-#####################################################################
+#############################################################
 clean_df <- na.omit(raw_data_baseline_arm_1)
 
 table1::table1(~tbip_sc_q5+tbip_sc_q8+tbip_sc_age_calc | tbip_sc_consent_part, data=raw_data_baseline_arm_1 )
@@ -433,3 +433,166 @@ no_adherence <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_
 no_adherence <- no_adherence[c('record_id',  'tbip_sc_q5', 'tbip_sc_consent_part','treat_out_intro')]
 
 write.table(no_adherence, "Data/no adherence.csv", sep = ",", row.names = FALSE)
+
+
+#######
+compl_f1_quest <- subset(raw_data_follow_up_1_arm_1, raw_data_follow_up_1_arm_1$index_follow_up_questionnaire_3_complete=='Unverified')
+
+compl_f1_quest <- compl_f1_quest[c('record_id', 'index_follow_up_questionnaire_3_complete')]
+
+
+hh_visited <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_date >= Sys.Date() - 7 & 
+                       (raw_data_hhci_info_arm_1$hhc_sc_intro=='Proceed'))
+
+write.table(hh_visited, "Data/hh_visited.csv", sep = ",", row.names = FALSE)
+
+
+
+present_hhc <- (subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_date >= Sys.Date() - 7 &
+                         (raw_data_hhci_info_arm_1$hhc_sc_attempt_1_present=='Yes' |
+                            raw_data_hhci_info_arm_1$hhc_sc_attempt_2_present=='Yes' |
+                            raw_data_hhci_info_arm_1$hhc_sc_attempt_3_present=='Yes')))
+
+present_hhc <- present_hhc[c('record_id', 'hhc_sc_attempt_1_present', 'hhc_sc_attempt_2_present' , 'hhc_sc_attempt_3_present', 'hhc_sc_verbal_consent', 'hhc_sc_dob')]
+
+
+
+###
+follow_up_data <- follow_up_data
+
+follow_up_data <- follow_up_data %>%mutate(fu1_date_mon = tbr_act_sputum_collection_date + weeks(4))
+
+follow_up_data <- follow_up_data %>%relocate(fu1_date_mon, .after = tbr_act_sputum_collection_date)
+
+write.table(follow_up_data, "Data/Follow up data.csv", sep = ",", row.names = FALSE)
+
+
+#NE
+hhc_ne <- raw_data_hhci_info_arm_1
+
+hhc_ne <- hhc_ne[c('record_id', 'hhc_sc_date', 'hhc_sc_age_calc', 'hhc_sc_on_treatment', 'hhc_sc_clinic_visit', 'hhc_sc_verbal_consent', 'hhc_sc_competent', 'hhc_sc_consent_provided')]
+
+write.table(hhc_ne, "Data/hhc_ne.csv", sep = ",", row.names = FALSE)
+
+
+no_present <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_attempt_1_present=='No' &
+                       (raw_data_hhci_info_arm_1$hhc_sc_attempt_2_present=='No') &
+                       (raw_data_hhci_info_arm_1$hhc_sc_attempt_3_present=='No'))
+
+no_present <- no_present[c('record_id', 'hhc_sc_date', 'hhc_sc_attempt_1_present', 'hhc_sc_attempt_2_present', 'hhc_sc_attempt_3_present')]
+
+write.table(no_present, "Data/Not present.csv", sep = ",", row.names = FALSE)
+
+
+#
+hhc_df1 <- raw_data_baseline_arm_1[c('record_id', 'tbip_sc_date_visit_hh1')]
+
+conf_1 <- raw_data_hhci_visit_info_arm_1[c('record_id', 'hhc_sch_hhi_date_visit')]
+
+hhci_dates_data <- left_join(hhc_df1, conf_1, by='record_id')
+
+#
+hhc_date <- hhci_dates_data
+
+rec_dates <- raw_data_hhci_info_arm_1[c('record_id', 'hhcl_member_name','redcap_repeat_instance','hhc_sc_attempt_1_rec_date', 'hhc_sc_attempt_1_rec_date_2', 'hhc_sc_intro', 'hhc_sc_attempt_1_present', 'hhc_sc_attempt_2_present', 'hhc_sc_attempt_3_present', 'hhc_sc_clinic_visit', 'hhc_sc_provide_sputum', 'hhc_sc_verbal_consent', 'hhc_sc_age_calc', 'hhc_sc_on_treatment', 'hhc_sc_language', 'hhc_sc_competent', 'hhc_sc_consent_provided', 'hhc_sc_date_cons')]
+
+hhci_dates <- left_join(hhc_date, rec_dates, by='record_id')
+
+write.table(hhci_dates, "Data/hhci_dates.csv", sep = ",", row.names = FALSE)
+
+
+hhci_dates$hhc_sc_attempt_1_rec_date <- as.POSIXct(hhci_dates$hhc_sc_attempt_1_rec_date)
+
+hhci_dates$hhc_sc_attempt_1_rec_date <- as.Date(hhci_dates$hhc_sc_attempt_1_rec_date)
+
+
+hhci_dates$hhc_sc_attempt_1_rec_date_2 <- as.POSIXct(hhci_dates$hhc_sc_attempt_1_rec_date_2)
+
+hhci_dates$hhc_sc_attempt_1_rec_date_2 <- as.Date(hhci_dates$hhc_sc_attempt_1_rec_date_2)
+
+
+df <- subset(hhci_dates, hhci_dates$tbip_sc_date_visit_hh1 >= Sys.Date() - 7 &
+               hhci_dates$hhc_sch_hhi_date_visit >= Sys.Date() - 7 | 
+               hhci_dates$hhc_sc_attempt_1_rec_date >= Sys.Date() - 7 |
+               hhci_dates$hhc_sc_attempt_1_rec_date_2 >= Sys.Date() - 7)
+
+
+
+write.table(df, "Data/hhc weekly data.csv", sep = ",", row.names = FALSE)
+
+#
+hhc_sn <- subset(raw_data_hhci_info_arm_1, (!is.na(raw_data_hhci_info_arm_1$hhc_sn_nature)))
+
+hhc_sn <- hhc_sn[c('record_id', 'redcap_repeat_instance','hhc_sc_attempt_1_present', 'hhc_sc_attempt_2_present', 'hhc_sc_attempt_3_present', 'hhc_sc_clinic_visit', 'hhc_sc_verbal_consent', 'hhc_sc_age_calc','hhc_sn_nature')]
+
+write.table(hhc_sn, "Data/hhc study notes.csv", sep = ",", row.names = FALSE)
+
+
+indx <- raw_data_baseline_arm_1
+
+hhc <- raw_data_hhci_info_arm_1
+
+indx_hhc <- left_join(indx,hhc, by='record_id')
+
+write.table(indx_hhc,"Data/indx_hhc_dataset.csv", sep = ",", row.names = FALSE)
+
+
+#NI
+ni <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc<14 &
+               (raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes'))
+
+ni <- ni[c('record_id', 'tbip_sc_q5', 'tbip_sc_ini_days_calc', 'tbip_sc_consent_part')]
+
+
+#No second attempt made
+no_sec_att <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$record_id >= 1105 &
+                       (!is.na(raw_data_hhci_info_arm_1$hhc_sc_attempt_1_present)) &
+                       (!is.na(raw_data_hhci_info_arm_1$hhc_sc_attempt_1_rec_date)) &
+                       (is.na(raw_data_hhci_info_arm_1$hhc_sc_attempt_2_present)))
+
+no_sec_att <- no_sec_att[c('record_id', 'redcap_repeat_instance', 'hhc_sc_attempt_1_present', 'hhc_sc_attempt_1_rec_date', 'hhc_sc_attempt_2_present')]
+
+write.table(no_sec_att, "Data/No second attempt made.csv", sep = ",", row.names = FALSE)
+
+
+
+#No third attempt made
+no_third_att <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$record_id >= 1105 &
+                       (!is.na(raw_data_hhci_info_arm_1$hhc_sc_attempt_2_present)) &
+                       (!is.na(raw_data_hhci_info_arm_1$hhc_sc_attempt_1_rec_date_2)) &
+                       (is.na(raw_data_hhci_info_arm_1$hhc_sc_attempt_3_present)))
+
+
+no_third_att <- no_third_att[c('record_id', 'redcap_repeat_instance', 'hhc_sc_attempt_2_present', 'hhc_sc_attempt_1_rec_date_2', 'hhc_sc_attempt_3_present')]
+
+write.table(no_third_att, "Data/No third attempt made.csv", sep = ",", row.names = FALSE)
+
+
+#############################################################
+hhc_conf <- subset(raw_data_hhci_visit_info_arm_1, raw_data_hhci_visit_info_arm_1$hhc_sch_call_outcome_1=='Unsuccessful - Ranging but no answer' |
+                     raw_data_hhci_visit_info_arm_1$hhc_sch_call_outcome_1=='Directly to voicemail')
+
+hhc_conf <- hhc_conf[c('record_id', 'hhc_sch_call_outcome_1', 'hhc_sch_call_outcome_1', 'hhc_sch_hhi_call_attempts___2', 'hhc_sch_hhi_call_attempts___3')]
+
+write.table(hhc_conf, "Data/hhc_conf.csv", sep = ",", row.names = FALSE)
+
+
+###################################################################################
+no_contact_x <- subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_ini_days_calc > 13 &
+                         (raw_data_baseline_arm_1$tbip_sc_q13=='No'))
+
+#####################################################################Gender verification
+gender_ver <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_consent_provided=='Yes')
+
+gender_ver <- gender_ver[c('record_id', 'redcap_repeat_instance', 'hhc_sc_consent_provided', 'hhcl_member_gender', 'hhcd_gender', 'hhcl_hhm_relation')]
+
+gender_ver$combine <- gender_ver$hhcl_member_gender == gender_ver$hhcd_gender
+
+gender_ver <- gender_ver %>%relocate(combine, .after = hhcd_gender)
+
+write.table(gender_ver, "Data/gender verification.csv", sep = ",", row.names = FALSE)
+
+
+hhc_enrolled <- subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_consent_provided=='Yes')
+
+hhc_enrolled <- hhc_enrolled[c('record_id', 'redcap_repeat_instance', 'hhc_sc_consent_provided', 'hhc_sc_date_cons')]

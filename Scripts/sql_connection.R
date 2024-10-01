@@ -2,14 +2,12 @@ library(DBI)
 library(RMySQL)
 library(RMariaDB)
 
-dw <- config::get(file = "Config/config.yml")
-
 db_connection <- dbConnect(
   drv = RMySQL::MySQL(),
-  dbname = dw$dbname,
-  host = dw$host,
-  username = dw$username,
-  password = dw$password
+  dbname = "stigma",
+  host = "localhost",
+  username = "root",
+  password = "P@55word"
 )
 
 print(db_connection)

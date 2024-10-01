@@ -26,25 +26,43 @@ today <- format(Sys.time(), "%Y-%m-%d")
 filename_new <- paste("Data/Weekly Enrolment Chart",today,".xlsx")
 
 
-setCellValue(cells[["9.4"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_date >= Sys.Date() - 7 &
+setCellValue(cells[["8.4"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_date >= Sys.Date() - 7 &
                                            (raw_data_hhci_info_arm_1$hhc_sc_intro=='Proceed'))))
 
 setCellValue(cells[["10.4"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_date >= Sys.Date() - 7 &
-                                            (!is.na(raw_data_hhci_info_arm_1$hhc_sc_clinic_visit)))))
+                                            (raw_data_hhci_info_arm_1$hhc_sc_attempt_1_present=='Yes' |
+                                               raw_data_hhci_info_arm_1$hhc_sc_attempt_2_present=='Yes' |
+                                               raw_data_hhci_info_arm_1$hhc_sc_attempt_3_present=='Yes'))))
 
 setCellValue(cells[["11.4"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_date >= Sys.Date() - 7 &
-                                            (raw_data_hhci_info_arm_1$hhc_sc_age_calc < 18 |
+                                            (raw_data_hhci_info_arm_1$hhc_sc_verbal_consent=='No'))))
+
+setCellValue(cells[["12.4"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_date >= Sys.Date() - 7 &
+                                            (!is.na(raw_data_hhci_info_arm_1$hhc_sc_dob)))))
+
+setCellValue(cells[["13.4"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_date >= Sys.Date() - 7 &
+                                            (raw_data_hhci_info_arm_1$hhc_sc_age_calc > 17) &
+                                               (raw_data_hhci_info_arm_1$hhc_sc_language=='Yes') &
+                                               (raw_data_hhci_info_arm_1$hhc_sc_on_treatment=='No'))))
+
+setCellValue(cells[["14.4"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_date >= Sys.Date() - 7 &
+                                            (raw_data_hhci_info_arm_1$hhc_sc_age < 17 |
                                                raw_data_hhci_info_arm_1$hhc_sc_language=='No' |
                                                raw_data_hhci_info_arm_1$hhc_sc_on_treatment=='Yes'))))
 
-setCellValue(cells[["12.4"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_date >= Sys.Date() - 7 &
-                                            (raw_data_hhci_info_arm_1$hhc_sc_age > 17 |
-                                               raw_data_hhci_info_arm_1$hhc_sc_language=='Yes' |
-                                               raw_data_hhci_info_arm_1$hhc_sc_on_treatment=='Yes'))))
+
+setCellValue(cells[["15.4"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_date >= Sys.Date() - 7 &
+                                            (raw_data_hhci_info_arm_1$hhc_sc_competent=='No'))))
+
+setCellValue(cells[["16.4"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_date >= Sys.Date() - 7 &
+                                            (raw_data_hhci_info_arm_1$hhc_sc_consent_provided=='No'))))
 
 
+setCellValue(cells[["17.4"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_date >= Sys.Date() - 7 &
+                                            (raw_data_hhci_info_arm_1$hhc_sc_existing=='Yes'))))
 
-setCellValue(cells[["13.4"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_date >= Sys.Date() - 7 &
+
+setCellValue(cells[["18.4"]], nrow(subset(raw_data_hhci_info_arm_1, raw_data_hhci_info_arm_1$hhc_sc_date >= Sys.Date() - 7 &
                                             (raw_data_hhci_info_arm_1$hhc_sc_consent_provided=='Yes'))))
 
 

@@ -61,7 +61,7 @@ ggplot(temp_1, aes(as.integer(days_visit_1))) +
   geom_bar(width = .8) +
   geom_text(aes(label=after_stat(count)), 
             stat = 'count', 
-            color="black",
+            color="blue",
             nudge_y = 6,
             size=3.5) +
   scale_x_continuous(breaks = seq(0,40,by=1)) +
