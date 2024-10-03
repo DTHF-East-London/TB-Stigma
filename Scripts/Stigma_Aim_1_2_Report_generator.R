@@ -52,7 +52,7 @@ filename_new <- paste("Data/TB_Stigma_Aim_1_2", today, ".xlsx")
 setCellValue(cells[["4.3"]], nrow(raw_data_baseline_arm_1))
 #setCellValue(cells[["5.3"]], nrow(subset(raw_data_baseline_arm_1, !is.na(raw_data_baseline_arm_1$sc_aim))))
 setCellValue(cells[["6.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_eligible=='Proceed')))
-setCellValue(cells[["7.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_end_ip=='End' | raw_data_baseline_arm_1$tbip_sc_age <18)))
+#setCellValue(cells[["7.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_end_ip=='End' | raw_data_baseline_arm_1$tbip_sc_age <18)))
 setCellValue(cells[["8.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_below_age=='Yes' | raw_data_baseline_arm_1$tbip_sc_below_age=='No')))
 setCellValue(cells[["9.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_q17=='No')))
 setCellValue(cells[["10.3"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_q8=='No')))
@@ -686,7 +686,7 @@ setCellValue(cells[["79.12"]], nrow(raw_data_hhci_info_arm_1 %>% dplyr::filter(i
 
 #Households listed by IPs
 
-setCellValue(cells[["6.16"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' | raw_data_baseline_arm_1$tbip_sc_cgiver_permission == 'Yes' & (raw_data_baseline_arm_1$tbip_sc_ini_days_calc < 14))))
+#setCellValue(cells[["6.16"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' | raw_data_baseline_arm_1$tbip_sc_cgiver_permission == 'Yes' & (raw_data_baseline_arm_1$tbip_sc_ini_days_calc < 14))))
 #setCellValue(cells[["7.16"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filter(hhc_collection_point=='Clinic') %>% distinct(record_id)))
 #setCellValue(cells[["8.16"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filter(hhc_collection_point=='HH') %>% distinct(record_id)))
 
@@ -815,7 +815,7 @@ setCellValue(cells[["79.25"]], nrow(raw_data_hhci_info_ni_arm_1 %>% dplyr::filte
 
 #Households listed by IPs
 
-setCellValue(cells[["6.29"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_cgiver_permission == 'Yes' & (raw_data_baseline_arm_1$tbip_sc_ini_days_calc >= 14))))
+#setCellValue(cells[["6.29"]], nrow(subset(raw_data_baseline_arm_1, raw_data_baseline_arm_1$tbip_sc_consent_part=='Yes' & raw_data_baseline_arm_1$tbip_sc_cgiver_permission == 'Yes' & (raw_data_baseline_arm_1$tbip_sc_ini_days_calc >= 14))))
 #setCellValue(cells[["7.29"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filter(hhc_collection_point=='Clinic') %>% distinct(record_id)))
 #setCellValue(cells[["8.29"]], nrow(raw_data_hhci_info_ex_arm_1 %>% dplyr::filter(hhc_collection_point=='HH') %>% distinct(record_id)))
 
